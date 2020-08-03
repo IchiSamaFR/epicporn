@@ -1,0 +1,17 @@
+<Files ~ "^/.*">
+  Deny from all
+</Files>
+
+<Files ~ "^.*\.css|.*\.js|.*\.png|.*\.jpg|.*\.gif">
+  Allow from all
+</Files>
+
+RewriteEngine On
+
+ErrorDocument 403 /errors/error.php
+ErrorDocument 404 /errors/error.php
+ErrorDocument 405 /errors/error.php
+ErrorDocument 408 /errors/error.php
+ErrorDocument 500 /errors/error.php
+ErrorDocument 502 /errors/error.php
+ErrorDocument 504 /errors/error.php
