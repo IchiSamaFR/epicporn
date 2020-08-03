@@ -6,6 +6,7 @@
 		require_once("admin.php");
 		return;
 	}
+	require_once("functions/universal_functions.php");
 	require_once("functions/functions.php");
 
 	$check = true;
@@ -35,6 +36,10 @@ include 'content/header.php';
 if(isset($_GET["vid"])){
 	include 'content/single_vid.php';
 } 
+else if(isset($_GET["show"]))
+{
+	include 'content/show_vids.php';
+}
 else if(empty($_GET))
 {
 	include 'content/home.php';

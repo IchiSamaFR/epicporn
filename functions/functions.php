@@ -64,7 +64,7 @@ function AddView($id){
 }
 
 
-function GetVideos($orderby, $count, $float){
+function GetVideos($orderby){
 
     $request = "SELECT videos.id as id, videos.title as title, videos_meta.meta_value as thumbnail
     FROM videos
@@ -72,24 +72,34 @@ function GetVideos($orderby, $count, $float){
     ON videos.id = videos_meta.post_id
     WHERE videos_meta.meta_key='thumbnail'";
 
-    if($orderby == "date"){
+    if($orderby['orderType'] == "date"){
         $request = $request . " ORDER BY videos.date DESC";
     } 
-    else if($orderby == "views"){
+    else if($orderby['orderType'] == "views"){
         $request = $request . " ORDER BY 
+        CONVERT (
             (SELECT videos_meta.meta_value 
             FROM videos_meta 
-            WHERE videos_meta.meta_key = 'views' AND videos_meta.post_id=videos.id) 
+            WHERE videos_meta.meta_key = 'views' AND videos_meta.post_id=videos.id),
+            SIGNED INTEGER)
             DESC";
     }
-    $request = $request . " LIMIT " . $count;
+    $request = $request . " LIMIT " . ($orderby['count'] + $orderby['startPos']);
 
     $result = GetSQLRequest_NoFetchArray($request);
-
+    $x = 0;
     while($row = mysqli_fetch_array($result)){
-        ?>
+        $x += 1;
+        if($x > $orderby['startPos'])
+        {
+            if(strlen($row['title']) > 40){
+                $row['title'] = substr($row['title'], 0, 40) . "...";
+            }
 
-        <a href="?vid=<?php echo $row['id']; ?>" class="vid_content <?php echo $float; ?>" alt="<?php echo $row['title']; ?>">
+
+        ?>
+        
+        <a href="?vid=<?php echo $row['id']; ?>" class="vid_content" alt="<?php echo $row['title']; ?>">
             <div class="vid">
                 <img src="<?php echo $row['thumbnail']; ?>" />
             </div>
@@ -101,47 +111,18 @@ function GetVideos($orderby, $count, $float){
         </a>
 
         <?php
+        }
     }
 }
 
 
-//          -------------------- SQL --------------------
+function GetPages_Number(){
+    
+    $request = "SELECT COUNT(id) FROM `videos`";
 
-function SendSQLRequest($request){
-    $dbh = BddConnect();
-    if($result = mysqli_query($dbh, $request)){
-        return true;
-    } else {
-        return "Error";
-    }
-}
+    $result = GetSQLRequest($request);
 
-function GetSQLRequest($request){
-    $dbh = BddConnect();
-    if($result = mysqli_query($dbh, $request)){
-        $lines = mysqli_fetch_row($result);
-
-        return $lines;
-    } else {
-        return "Error";
-    }
-}
-
-function GetSQLRequest_NoFetchArray($request){
-    $dbh = BddConnect();
-
-    if($result = mysqli_query($dbh, $request))
-    {
-        return $result;
-    } else {
-        return "Error";
-    }
-}
-
-//  Fonction clean des texts afin d'eviter les injections sql etc...
-function CleanText($string){
-    $string = addslashes($string);
-    return $string;
+    $countVideos = $result[0];
 }
 
 ?>

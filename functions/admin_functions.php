@@ -133,7 +133,7 @@ function GetInfos($type){
         $request = "SELECT count(*) 
         FROM videos";
 
-        $result = SendSQLRequest($request);
+        $result = GetSQLRequest($request);
         return $result[0];
     } 
     else if ($type == "videos_views"){
@@ -141,14 +141,14 @@ function GetInfos($type){
         FROM `videos_meta` 
         WHERE meta_key = 'views'";
 
-        $result = SendSQLRequest($request);
+        $result = GetSQLRequest($request);
         return $result[0];
     } 
     else if ($type == "videos_coms"){
         $request = "SELECT count(*) 
         FROM `coms`";
 
-        $result = SendSQLRequest($request);
+        $result = GetSQLRequest($request);
         return $result[0];
     } 
     else if ($type == "videos_likes_stats"){
@@ -159,7 +159,7 @@ function GetInfos($type){
         FROM `videos_meta` 
         WHERE meta_key = 'dislikes'";
 
-        $result = SendSQLRequest($request);
+        $result = GetSQLRequest($request);
         if($result[0] != 0 && $result[1] != 0)
         {
             return $result[0] / ($result[0] + $result[1]) ;
@@ -177,7 +177,7 @@ function GetInfos($type){
     else if ($type == "users_count"){
         $request = "SELECT count(*) FROM epic_users";
 
-        $result = SendSQLRequest($request);
+        $result = GetSQLRequest($request);
         return $result[0];
     }
 }
@@ -190,7 +190,7 @@ function GetVideos($by){
         FROM videos
         LIMIT 10";
 
-        $result = SendSQLRequest_NoFetchArray($request);
+        $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
             ?>
@@ -214,7 +214,7 @@ function GetVideos($by){
                     WHERE videos_meta.post_id=". $row["id"] .
                     " ORDER BY name ASC";
 
-                    $secondResult = SendSQLRequest_NoFetchArray($secondRequest);
+                    $secondResult = GetSQLRequest_NoFetchArray($secondRequest);
 
                     echo '<p>';
                     while($secondRow = mysqli_fetch_array($secondResult)){
@@ -240,7 +240,7 @@ function GetCategories($by){
         ORDER BY name ASC
         LIMIT 10";
 
-        $result = SendSQLRequest_NoFetchArray($request);
+        $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
             ?>
@@ -262,7 +262,7 @@ function GetCategories($by){
         FROM categories
         ORDER BY name ASC";
 
-        $result = SendSQLRequest_NoFetchArray($request);
+        $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
             ?>
@@ -290,7 +290,7 @@ function GetComs($page = 1, $rowPerPage = 20){
     ON coms.id_video = videos.id
     LIMIT ". $rowsToGet;
 
-    $result = SendSQLRequest_NoFetchArray($request);
+    $result = GetSQLRequest_NoFetchArray($request);
 
     while($row = mysqli_fetch_array($result)){
 
@@ -342,40 +342,4 @@ function DeleteVideo($id){
         echo "error";
     }
 }
-
-
-//          -------------------- SQL --------------------
-
-function SendSQLRequest($request){
-    $dbh = BddConnect();
-    if($result = mysqli_query($dbh, $request)){
-        $lines = mysqli_fetch_row($result);
-
-        foreach ($lines as &$line){
-            if($line == ""){
-                $line = 0;
-            }
-        }
-        return $lines;
-    } else {
-        return "Error";
-    }
-}
-
-function SendSQLRequest_NoFetchArray($request){
-    $dbh = BddConnect();
-
-    if($result = mysqli_query($dbh, $request))
-    {
-        return $result;
-    } else {
-        return "Error";
-    }
-}
-//  Fonction clean des texts afin d'eviter les injections sql etc...
-function CleanText($string){
-    $string = str_replace("'","\'",$string);
-    return $string;
-}
-
 ?>

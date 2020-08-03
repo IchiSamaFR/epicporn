@@ -4,6 +4,7 @@
 	session_start();
 	$_SESSION["admin_user"] = "test";
 
+	require_once("functions/universal_functions.php");
 	include_once("functions/admin_functions.php");
 	
 
