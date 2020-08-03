@@ -1,30 +1,35 @@
 <?php
 
+function GetConfig(){
+    
+    $configConnection = array(
+        //  Where is your database
+        'db_host' => 'localhost',
 
-$configConnection = array(
-    //  Where is your database
-    "db_host" => "localhost",
+        //  Which database
+        'db_name' => 'local_epicporn',
 
-    //  Which database
-    "db_name" => "epicporn",
+        //  Username of connection
+        'db_username' => 'root',
 
-    //  Username of connection
-    "db_username" => "root",
+        //  Pass of connection
+        'db_pass' => '',
 
-    //  Pass of connection
-    "db_pass" => "",
-
-    //  Database charset
-    "db_charset" => "utf8mb4",
-);
+        //  Database charset
+        'db_charset' => 'utf8mb4'
+    );
+    return $configConnection;
+}
 
 function BddConnect(){
-    $db_host = "localhost";
-    $db_name = "local_epicporn";
-    $db_username = "root";
-	$db_pass = "";
+    $config = GetConfig();
+    
+    $db_host = $config['db_host'];
+    $db_name = $config['db_name'];
+    $db_username = $config['db_username'];
+	$db_pass = $config['db_pass'];
     $dbh = mysqli_connect($db_host,$db_username,$db_pass, $db_name);
-    $dbh -> set_charset("utf8mb4");
+    $dbh -> set_charset($config['db_charset']);
     return $dbh;
 }
 
