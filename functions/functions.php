@@ -96,7 +96,7 @@ function GetVideos($orderby){
                 $row['title'] = substr($row['title'], 0, 40) . "...";
             }
 
-
+            /*      HTML PART */
         ?>
         
         <a href="?vid=<?php echo $row['id']; ?>" class="vid_content" alt="<?php echo $row['title']; ?>">
@@ -111,18 +111,190 @@ function GetVideos($orderby){
         </a>
 
         <?php
+            /*      HTML END */
         }
     }
 }
 
 
-function GetPages_Number(){
-    
+function GetNavBar($v_perpage){
+    $videos = GetVideos_Number();
+    $corrector = 0;
+
+    $pages = intval($videos / $v_perpage) + 1;
+
+    if($pages == 1){
+        return;
+    }
+
+    if($pages == ($videos / $v_perpage) + 1){
+        $corrector = 1;
+    }
+
+    if(!isset($_GET["page"])){
+        $_GET["page"] = 1;
+    }
+    ?>
+
+    <div class="nav_pages">
+        <?php 
+        $count = 0;
+        if($pages <= 10){
+            while($pages > $count + $corrector){
+                $count ++;
+                if($count == $_GET["page"]){
+                    echo '<a>';
+                } else {
+                    echo '<a href="?show='. $_GET["show"] .'&page='. $count .'">';
+                }
+                    ?>
+                    <div class="nav_slot <?php 
+                    if($count == $_GET["page"]){
+                        echo 'active';
+                    }
+                    ?>
+                    ">
+                        <p><?php echo $count; ?> </p>
+                    </div>
+                </a>
+                <?php
+            }
+        }else {
+            if($_GET["page"] < 6)
+            {
+                while($count < 8){
+                    $count ++;
+                    if($count == $_GET["page"]){
+                        echo '<a>';
+                    } else {
+                        echo '<a href="?show='. $_GET["show"] .'&page='. $count .'">';
+                    }
+                        ?>
+                        <div class="nav_slot <?php 
+                        if($count == $_GET["page"]){
+                            echo 'active';
+                        }
+                        ?>
+                        ">
+                            <p><?php echo $count; ?> </p>
+                        </div>
+                    </a>
+                    <?php
+                }
+                ?>
+                <a>
+                    <div class="nav_slot">
+                        <p>...</p>
+                    </div>
+                </a>
+                <?php
+                echo '<a href="?show='. $_GET["show"] .'&page='. ($pages - $corrector) .'">';
+                ?>
+                    <div class="nav_slot">
+                        <p><?php echo ($pages - $corrector); ?> </p>
+                    </div>
+                </a>
+                <?php
+            } 
+            else if ($_GET["page"] > $pages-7)
+            {
+                
+                echo '<a href="?show='. $_GET["show"] .'&page=1">';
+                ?>
+                    <div class="nav_slot">
+                        <p><?php echo 1; ?> </p>
+                    </div>
+                </a>
+                <a>
+                    <div class="nav_slot">
+                        <p>...</p>
+                    </div>
+                </a>
+                <?php
+                $count = $pages - 9;
+                while($count < $pages - $corrector){
+                    $count ++;
+                    if($count == $_GET["page"]){
+                        echo '<a>';
+                    } else {
+                        echo '<a href="?show='. $_GET["show"] .'&page='. $count .'">';
+                    }
+                        ?>
+                        <div class="nav_slot <?php 
+                        if($count == $_GET["page"]){
+                            echo 'active';
+                        }
+                        ?>
+                        ">
+                            <p><?php echo $count; ?> </p>
+                        </div>
+                    </a>
+                    <?php
+                }
+            } else 
+            {
+                echo '<a href="?show='. $_GET["show"] .'&page=1">';
+                ?>
+                    <div class="nav_slot">
+                        <p> 1 </p>
+                    </div>
+                </a>
+                <a>
+                    <div class="nav_slot">
+                        <p>...</p>
+                    </div>
+                </a>
+                <?php
+                $count = $_GET["page"] - 3;
+                while($count < $_GET["page"] + 3){
+                    $count ++;
+                    if($count == $_GET["page"]){
+                        echo '<a>';
+                    } else {
+                        echo '<a href="?show='. $_GET["show"] .'&page='. $count .'">';
+                    }
+                        ?>
+                        <div class="nav_slot <?php 
+                        if($count == $_GET["page"]){
+                            echo 'active';
+                        }
+                        ?>
+                        ">
+                            <p><?php echo $count; ?> </p>
+                        </div>
+                    </a>
+                    <?php
+                }
+                ?>
+                <a>
+                    <div class="nav_slot">
+                        <p>...</p>
+                    </div>
+                </a>
+                <?php
+                echo '<a href="?show='. $_GET["show"] .'&page='. ($pages - $corrector) .'">';
+                ?>
+                    <div class="nav_slot">
+                        <p><?php echo ($pages - $corrector); ?> </p>
+                    </div>
+                </a>
+                <?php
+            }
+        }
+        
+        
+        ?>
+    </div>
+    <?php
+
+}
+
+
+function GetVideos_Number(){
     $request = "SELECT COUNT(id) FROM `videos`";
 
     $result = GetSQLRequest($request);
-
-    $countVideos = $result[0];
+    return $result[0];
 }
 
 ?>
