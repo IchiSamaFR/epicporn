@@ -2,7 +2,6 @@
 <?php
 	$check = true;
 	session_start();
-	$_SESSION["admin_user"] = "test";
 
 	require_once("functions/universal_functions.php");
 	include_once("functions/admin_functions.php");
@@ -23,9 +22,9 @@
         <script src="tools/jquery=3.1.1.min.js"></script>
 
 	<?php
-		if(!isset($_SESSION["admin_user"])){
+		if(!isset($_SESSION['Admin'])){
 			include 'content_admin/connection.php';
-		} else if(isset($_SESSION["admin_user"])) {
+		} else if(isset($_SESSION['Admin'])) {
 			include 'content_admin/header.php';
 			include 'content_admin/content.php';
 		}

@@ -8,6 +8,36 @@ function CreateNewUser($mail, $username, $password){
 
 }
 
+function Admin_Connection($username, $password){
+
+    $username = CleanText($username);
+    $password = CleanText($password);
+
+    $password = hash('md5', $password, false);
+    
+	$request = "SELECT * FROM admin_users 
+    WHERE username='" . $username . "'
+    AND password='" . $password . "'";
+
+    
+    $result = GetSQLRequest_NoFetchArray($request);
+    
+    if(mysqli_num_rows($result) > 0){
+        $data = mysqli_fetch_assoc($result);
+        $_SESSION['Admin'] = array(
+            'login' => $username, 
+            'pass' => $password,
+            'rank' => $data['rank']
+        );
+    } else {
+        return "Mauvais identifiants.";
+    }
+}
+
+function Admin_Disconnection(){
+    unset($_SESSION['Admin']);
+}
+
 function AddVideo($embed, $title, $cat){
     //  Connection to the BDD
     $dbh = BddConnect();

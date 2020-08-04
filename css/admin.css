@@ -38,9 +38,19 @@ textarea {
 }
 /* --------------------CONNECT-------------------- */
 
+.connec_page{
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url(../img/bg/bgComputerRegister.jpg) center center no-repeat;
+    background-size: auto auto !important;
+}
+
 .connec_panel
 {
     border: 1px solid rgba(237, 40, 181);
+    box-shadow: 0 0 10px 5px #ed28b5;;
     display: block;
     position: fixed;
     background-color: #23282d;
@@ -116,14 +126,17 @@ textarea {
     margin-right: 20px;
     font-size: 14px;
 }
-.header a.disconnect {
-    margin-top: 5px;
+.header .disconnect {
+    margin-top: 7px;
     margin-right: 20px;
     font-size: 14px;
     text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
     color: white;
 }
-.header a.disconnect:hover {
+.header .disconnect:hover {
     color: rgb(0, 194, 228);
 }
 .header .logo
