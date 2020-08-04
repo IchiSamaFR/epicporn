@@ -24,3 +24,16 @@ Configure the config file :
 //  Database charset"
 db_charset" => "utf8mb4",
 ```
+
+## Test
+
+To try the website there is an SQL database example :
+```
+\local_epicporn.sql
+```
+
+Admin logins are :
+```
+username : admin
+pass	 : 
+```
