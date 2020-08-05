@@ -29,7 +29,6 @@
 if(!isset($_SESSION["older"])){
 	include 'content/yearoldpanel.php';
 	echo '<div id="blur" class="blur">';
-	echo '<div>';
 }
 include 'content/header.php';
 
@@ -51,6 +50,6 @@ include 'content/pre_foot.php';
 include 'content/footer.php';
 
 ?>
-
+		</div>
 	</body>
 </html>

@@ -1,17 +1,38 @@
-<Files ~ "^/.*">
-  Deny from all
+
+<Files *.php>
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
 </Files>
 
-<Files ~ "^.*\.css|.*\.js|.*\.png|.*\.jpg|.*\.gif">
-  Allow from all
+<Files index.php>
+    Order Allow,Deny
+    Allow from all
 </Files>
 
-RewriteEngine On
+<Files admin.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+<Files yearoldcheck.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
 
-ErrorDocument 403 /errors/error.php
-ErrorDocument 404 /errors/error.php
-ErrorDocument 405 /errors/error.php
-ErrorDocument 408 /errors/error.php
-ErrorDocument 500 /errors/error.php
-ErrorDocument 502 /errors/error.php
-ErrorDocument 504 /errors/error.php
+Redirect /admin /admin.php
+
+
+php_flag output_buffering on
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?path=$1 [NC,L,QSA]
+
+
+ErrorDocument 403 /index.php
+ErrorDocument 404 /index.php
+ErrorDocument 405 /index.php
+ErrorDocument 408 /index.php
+ErrorDocument 500 /index.php
+ErrorDocument 502 /index.php
+ErrorDocument 504 /index.php
