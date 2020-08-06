@@ -13,9 +13,9 @@ function GetThisUrl(){
 function SendSQLRequest($request){
     $dbh = BddConnect();
     if($result = mysqli_query($dbh, $request)){
-        return true;
+        return $dbh;
     } else {
-        return "Error";
+        return $dbh -> error;
     }
 }
 
@@ -26,7 +26,7 @@ function GetSQLRequest($request){
 
         return $lines;
     } else {
-        return "Error";
+        return $dbh -> error;
     }
 }
 
@@ -37,7 +37,7 @@ function GetSQLRequest_NoFetchArray($request){
     {
         return $result;
     } else {
-        return "Error";
+        return $dbh -> error;
     }
 }
 

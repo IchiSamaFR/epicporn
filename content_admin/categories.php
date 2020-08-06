@@ -4,8 +4,11 @@
 if(!isset($_SESSION['cache_categories'])){
     $_SESSION['cache_categories'] = "";
 }
-if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
+if(isset($_POST["add_cat"])){
     AddCategorie($_POST["category"]);
+}
+if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
+    DeleteCategories($_POST["categories"]);
 }
 ?>
 
@@ -28,7 +31,7 @@ if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
 
                     <div>
                         <input type="submit" class="add_button" href="admin.php?vid&new_vid" value="Ajouter la catégorie" 
-                        name="add_vid" tabindex="100"></input>
+                        name="add_cat" tabindex="100"></input>
                         <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
                     </div>
                 </form>
@@ -42,21 +45,31 @@ if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
             <h1 class="page_title"> Catégories </h1>
         </div>
 
-        <div class="table_list">
-            <div class="box title_row border_down category">
-                <p> Nom de la catégorie </p>
+        <form method="post">
+            <div class="table_list">
+                <div class="box title_row border_down categories">
+                    </br>
+                    <p> Nom de la catégorie </p>
+                </div>
+
+                <?php
+
+                GetCategories("infos");
+
+                ?>
+
+                <div class="box title_row border_up categories">
+                    </br>
+                    <p> Nom de la catégorie </p>
+                </div>
             </div>
-
-            <?php
-
-            GetCategories("infos");
-
-            ?>
-
-            <div class="box title_row border_up category">
-                <p> Nom de la catégorie </p>
+            <div class="actions">
+                    <input type="submit" class="delete_button" value="Supprimer" 
+                        name="delete_cat" tabindex="200"></input>
+                    <input type="submit" class="add_button" value="Modifier" 
+                        name="modify_cat" tabindex="210"></input>
             </div>
-        </div>
+        </form>
     <?php
         }
     ?>

@@ -7,6 +7,11 @@ if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
     }
     $error = AddVideo($_POST["embed"], $_POST["title"], $_POST["categories"]);
 }
+if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
+    DeleteVideos($_POST["videos"]);
+}
+
+
 ?>
 
 <div class="centered">
@@ -60,21 +65,31 @@ if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
         <h1 class="page_title"> Vidéos </h1>
     </div>
 
-    <div class="table_list page">
-        <div class="box title_row border_down video">
-            <p> Titre de la vidéo </p>
-            <p> Catégories </p>
-        </div>
+    <form method="post">
+        <div class="table_list page">
+            <div class="box title_row border_down video">
+                </br>
+                <p> Titre de la vidéo </p>
+                <p> Catégories </p>
+            </div>
 
-        <?php
-            GetVideos("infos");
-        ?>
-        
-        <div class="box title_row border_up video">
-            <p> Titre de la vidéo </p>
-            <p> Catégories </p>
+            <?php
+                GetVideos("infos");
+            ?>
+            
+            <div class="box title_row border_up video">
+                </br>
+                <p> Titre de la vidéo </p>
+                <p> Catégories </p>
+            </div>
         </div>
-    </div>
+        <div class="actions">
+                <input type="submit" class="delete_button" value="Supprimer" 
+                    name="delete_vid" tabindex="200"></input>
+                <input type="submit" class="add_button" value="Modifier" 
+                    name="modify_vid" tabindex="210"></input>
+        </div>
+    </form>
 
     <?php
         }

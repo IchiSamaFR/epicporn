@@ -332,6 +332,47 @@ input:checked + .slider:before {
 }
 
 
+
+/* --------------------ACTIONS BUTTONS-------------------- */
+
+.actions {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.add_button {
+    background-color: white;
+    text-decoration: none;
+    font-size: 14px;
+    color: #2196F3;
+    border: 1px solid #2196F3;
+    border-radius: 3px;
+    padding: 6px 15px 6px 15px;
+    cursor: pointer;
+}
+.add_button:hover, .add_button:focus {
+    color: white;
+    background-color: #2196F3;
+}
+
+.delete_button{
+    background-color: white;
+    text-decoration: none;
+    font-size: 14px;
+    color: #f32121;
+    border: 1px solid #f32121;
+    border-radius: 3px;
+    padding: 6px 15px 6px 15px;
+    cursor: pointer;
+}
+.delete_button:hover, .delete_button:focus {
+    color: white;
+    background-color: #f32121;
+}
+
+
+
+
 /* --------------------VIDEOS-------------------- */
 
 .box.new_vid {
@@ -353,17 +394,17 @@ input:checked + .slider:before {
     min-height: 30px;
     background-color: rgb(240, 240, 240);
     display: grid;
-    grid-template-columns: auto 20%;
+    grid-template-columns: 32px auto 20%;
 }
-.table_list .box.category {
+.table_list .box.categories {
     min-height: 30px;
     background-color: rgb(240, 240, 240);
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 32px auto;
 }
 
 .table_list .box p{
-    margin-left: 20px;
+    margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
 }
@@ -373,21 +414,6 @@ input:checked + .slider:before {
 
 .comment a {
     float: none;
-}
-
-.add_button {
-    background-color: white;
-    text-decoration: none;
-    font-size: 14px;
-    color: #2196F3;
-    border: 1px solid #2196F3;
-    border-radius: 3px;
-    padding: 6px 15px 6px 15px;
-    cursor: pointer;
-}
-.add_button:hover, .add_button:focus {
-    color: white;
-    background-color: #2196F3;
 }
 
 .cancel_button{
@@ -412,35 +438,27 @@ input.add_button {
 
 /* --------------------CHECKBOXS-------------------- */
 
+
 .container {
     color: black;
-    display: block;
+    display: inline-block;
     position: relative;
-    margin-bottom: 12px;
     cursor: pointer;
     width: 96%;
+    margin-left: 5px;
     font-size: 16px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    border: 1px solid rgba(0,0,0,0.2);
     border-radius: 3px;
-    background-color: rgba(0,0,0,0.04);
-  }
-  .container p {
-      margin: 0;
-      padding-top: 5px;
-      padding-left: 30px;
-      margin-bottom: 5px;
-  }
-
+}
 .container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
-  }
-.checkmark {
+}
+  .checkmark {
     position: absolute;
     top: 8px;
     left: 6px;
@@ -484,7 +502,31 @@ input.add_button {
 }
 
 
+.choose_categories .container {
+    color: black;
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    width: 96%;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    background-color: rgba(0,0,0,0.04);
+  }
+  .choose_categories .container p {
+      margin: 0;
+      padding-top: 5px;
+      padding-left: 30px;
+      margin-bottom: 5px;
+  }
 
+
+/*          ANCIENT TOGGLE / CHECKMARK
 .toggle {
     display: block;
     height: 10px;
@@ -543,7 +585,7 @@ input.add_button {
     padding-top: 10px;
     margin-bottom: 10px;
 }
-
+*/
 
 
 
@@ -597,8 +639,18 @@ input.add_button {
 .table_list .title_row.border_down {
     border-bottom: 1px solid rgb(170, 170, 170);
 }
+.table_list .title_row.border_down p {
+    margin-top : 0;
+    margin-left : 10px;
+    padding-top: 5px;
+}
 .table_list .title_row.border_up {
     border-top: 1px solid rgb(170, 170, 170);
+}
+.table_list .title_row.border_up p {
+    margin-bottom : 0;
+    margin-left : 10px;
+    padding-bottom: 5px;
 }
 
 .table_list .box a {

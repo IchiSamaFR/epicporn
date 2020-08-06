@@ -39,8 +39,6 @@ function Admin_Disconnection(){
 }
 
 function AddVideo($embed, $title, $cat){
-    //  Connection to the BDD
-    $dbh = BddConnect();
 
     if($title == ""){
         return "Titre null";
@@ -64,12 +62,11 @@ function AddVideo($embed, $title, $cat){
     VALUES 
     (NULL, '".$title."', '". $embedInsert ."', (SELECT NOW()), '". $_SESSION["admin_user"] . "', 'published', '')";
 
-    if(mysqli_query($dbh, $request)){
-        $last_id = $dbh->insert_id;
+    if($res = SendSQLRequest($request)){
+        $last_id = $res->insert_id;
 
         //  If there is a category
         if($cat != null){
-            $dbh = BddConnect();
             $request = "INSERT INTO `videos_meta` 
             (`meta_id`, `post_id`, `meta_key`, `meta_value`)
             VALUES ";
@@ -87,9 +84,9 @@ function AddVideo($embed, $title, $cat){
             }
             $request = rtrim($request, ", ");
             $request = $request . ";";
-            
-            if(!mysqli_query($dbh, $request)){
-                return ("Error description: " . $dbh -> error);
+
+            if(!$res = SendSQLRequest($request)){
+                echo($res);
             }
         }
 
@@ -115,38 +112,69 @@ function AddVideo($embed, $title, $cat){
             $thumb_url = "https://cdn49752055.ahacdn.me/contents/videos_screenshots//" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/300x169/1.jpg";
         }
 
-        $dbh = BddConnect();
         $request = "INSERT INTO `videos_meta` 
         (`meta_id`, `post_id`, `meta_key`, `meta_value`)
         VALUES (null, ". $last_id .",'thumbnail','". $thumb_url ."')
         ";
-        if(!mysqli_query($dbh, $request)){
-            echo("Error description: " . $dbh -> error);
+        if(!$res = SendSQLRequest($request)){
+            echo($res);
         }
         
         $request = "INSERT INTO `videos_meta` 
         (`meta_id`, `post_id`, `meta_key`, `meta_value`)
         VALUES (null, ". $last_id .",'views','0');";
-        if(!mysqli_query($dbh, $request)){
-            echo("Error description: " . $dbh -> error);
+
+        if(!$res = SendSQLRequest($request)){
+            echo($res);
         }
 
     } else {
-        return ("Error description: " . $dbh -> error);
+        return ($res -> error);
     }
 }
 function AddCategorie($name){
-    //  Connection to the BDD
-    $dbh = BddConnect();
-
     //  Create new video
     $request = "INSERT INTO `categories` 
     (`id`, `name`) 
     VALUES 
     (NULL, '".$name."')";
 
-    if(!mysqli_query($dbh, $request)){
-        echo("Error description: " . $dbh -> error);
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+}
+
+function DeleteCategories($categories){
+
+    $categoriesToSql = "";
+    $videosCatToSql = "";
+    $x = sizeof($categories);
+    foreach($categories as $cat){
+        $x = $x - 1;
+        $categoriesToSql = $categoriesToSql . "id=" . $cat . " ";
+
+        $videosCatToSql = $videosCatToSql . "meta_value=" . $cat . " ";
+
+        if($x != 0) {
+            $categoriesToSql = $categoriesToSql . "OR ";
+            $videosCatToSql = $videosCatToSql . "OR ";
+        }
+    }
+
+    //  Delete from categories
+    $request = "DELETE FROM `categories` 
+    WHERE " . $categoriesToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+    
+    //  Delete categories from meta videos
+    $request = "DELETE FROM `videos_meta` 
+    WHERE meta_key='category' AND (" . $videosCatToSql . ")";
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
     }
 }
 
@@ -221,7 +249,7 @@ function GetVideos($by){
         
         $request = "SELECT id, title, embed
         FROM videos
-        LIMIT 10";
+        LIMIT 50";
 
         $result = GetSQLRequest_NoFetchArray($request);
 
@@ -235,6 +263,11 @@ function GetVideos($by){
                 }
             ?> 
             video">
+            
+                <label class="container">
+                  <input type="checkbox" name="videos[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
                 <p> <a href="?vid&edit=<?php echo $row["id"] ?>"><?php echo $row["title"] ?> </a> </p>
                 <div> 
                     <?php 
@@ -271,18 +304,22 @@ function GetCategories($by){
         $request = "SELECT id, name
         FROM categories
         ORDER BY name ASC
-        LIMIT 10";
+        LIMIT 50";
 
         $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
             ?>
 
-            <div class="box <?php
+            <div class="box categories <?php
             if ($x%2 == 0){
                 echo "pair";
             }?> 
-            video">
+            ">
+                <label class="container">
+                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
                 <p> <a href="?cat&edit=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
             </div>
             <?php
@@ -361,17 +398,37 @@ function GetComs($page = 1, $rowPerPage = 20){
     }
 }
 
-function DeleteVideo($id){
-    $dbh = BddConnect();
+function DeleteVideos($videos){
+    $videosToSql = "";
+    $videosMetaToSql = "";
 
-    $request = "DELETE FROM `videos`
-    WHERE
-    `id` = ". $id .";";
+    $x = sizeof($videos);
+    foreach($videos as $vid){
+        $x = $x - 1;
+        $videosToSql = $videosToSql . "id=" . $vid . " ";
 
-    if($result = mysqli_query($dbh, $request)) {
+        $videosMetaToSql = $videosMetaToSql . "post_id=" . $vid . " ";
 
-    } else {
-        echo "error";
+        if($x != 0) {
+            $videosToSql = $videosToSql . "OR ";
+            $videosMetaToSql = $videosMetaToSql . "OR ";
+        }
+    }
+
+    //  Delete from categories
+    $request = "DELETE FROM `videos` 
+    WHERE " . $videosToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+    
+    //  Delete categories from meta videos
+    $request = "DELETE FROM `videos_meta` 
+    WHERE " . $videosMetaToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
     }
 }
 ?>
