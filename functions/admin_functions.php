@@ -42,7 +42,9 @@ function AddVideo($embed, $title, $cat){
     //  Connection to the BDD
     $dbh = BddConnect();
 
-    $embed = CleanText($embed);
+    if($title == ""){
+        return "Titre null";
+    }
     $title = CleanText($title);
 
 
@@ -51,28 +53,30 @@ function AddVideo($embed, $title, $cat){
     if(sizeof($thumb_array) > 1){
         $thumb_array = explode('"', $thumb_array[1]);
     } else {
-        return;
+        return "Embed non correcte, aucune source détecté";
     }
 
+    $embedInsert = CleanText($embed);
+    
     //  Create new video
     $request = "INSERT INTO `videos` 
     (`id`, `title`, `embed`, `date`, `author`, `status`, `url_name`) 
     VALUES 
-    (NULL, '".$title."', '".$embed."', (SELECT NOW()), '". $_SESSION["admin_user"] . "', 'published', '')";
+    (NULL, '".$title."', '". $embedInsert ."', (SELECT NOW()), '". $_SESSION["admin_user"] . "', 'published', '')";
 
     if(mysqli_query($dbh, $request)){
         $last_id = $dbh->insert_id;
 
         //  If there is a category
-        if($cat != ""){
+        if($cat != null){
             $dbh = BddConnect();
             $request = "INSERT INTO `videos_meta` 
             (`meta_id`, `post_id`, `meta_key`, `meta_value`)
             VALUES ";
             
-            $values = explode (";", $cat);
             $x = 0;
-            foreach ($values as $val){
+            //  Foreach cat, add it to the sql request
+            foreach ($cat as $val){
                 if($x > 0){
                     $request = $request . ",";
                 }
@@ -85,13 +89,12 @@ function AddVideo($embed, $title, $cat){
             $request = $request . ";";
             
             if(!mysqli_query($dbh, $request)){
-                echo("Error description: " . $dbh -> error);
+                return ("Error description: " . $dbh -> error);
             }
         }
+
+
         //  Thumbnail
-        $thumb_url = "";
-        $thumb_array = explode('src="', $embed);
-        $thumb_array = explode('"', $thumb_array[1]);
         $vid_url = $thumb_array[0];
         if(stristr($vid_url, "txxx.com"))
         {
@@ -129,7 +132,7 @@ function AddVideo($embed, $title, $cat){
         }
 
     } else {
-        echo("Error description: " . $dbh -> error);
+        return ("Error description: " . $dbh -> error);
     }
 }
 function AddCategorie($name){
@@ -296,12 +299,11 @@ function GetCategories($by){
 
         while($row = mysqli_fetch_array($result)){
             ?>
-                <div class="toggle_cat" id="<?php echo $row["id"] ?>" value="test">
-                    <div class="toggle"> 
-                        <div id="toggle_<?php echo $row["id"] ?>" class=""> </div>
-                    </div>
-                    <p> <?php echo $row["name"] ?> </p>
-                </div>
+            
+                <label class="container"> <p> <?php echo $row["name"] ?> </p>
+                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
             <?php
         }
     }

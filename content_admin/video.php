@@ -2,9 +2,11 @@
 <?php 
 
 if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
-    AddVideo($_POST["embed"], $_POST["title"], $_SESSION['cache_categories']);
+    if(!isset($_POST["categories"])){
+        $_POST["categories"] = null;
+    }
+    $error = AddVideo($_POST["embed"], $_POST["title"], $_POST["categories"]);
 }
-$_SESSION['cache_categories'] = "";
 ?>
 
 <div class="centered">
@@ -12,6 +14,9 @@ $_SESSION['cache_categories'] = "";
     <?php
         //          -------------------- ADD A NEW VIDEO --------------------
         if(isset($_GET['new_vid'])){
+            if(isset($error)){
+                echo "<p>".$error . "</p>";
+            }
             ?>
 
             <h1 class="page_title"> Ajouter une vidéo </h1>
@@ -78,6 +83,7 @@ $_SESSION['cache_categories'] = "";
 
 
 <script>
+    /*
     $(document).ready(function() {
         $('.toggle_cat').click(function(){
             var t = $(this).attr('id');
@@ -102,5 +108,6 @@ $_SESSION['cache_categories'] = "";
             });
         });
     });
+    */
 
 </script>
