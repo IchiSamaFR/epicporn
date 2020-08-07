@@ -1,32 +1,49 @@
+
+<?php 
+
+if(isset($_POST["delete_coms"]) && isset($_POST["coms"])){
+    DeleteComs($_POST["coms"]);
+}
+
+?>
+
+
 <div class="centered">
     <p class="page_title"> Commentaires </p>
 
-    <div class="table_list page">
-        <div class="box title_row border_down coms">
-            <div class="toggle_select" id="all" value="test">
-                <div class="toggle"> 
-                    <div id="toggle_" class="toggle_btn"> </div>
+    <form method="post">
+        <div class="table_list page">
+            <div class="box title_row border_down coms">
+                <div class="toggle_select" id="all" value="test">
+                    <div class="toggle"> 
+                        <div id="toggle_" class="toggle_btn"> </div>
+                    </div>
                 </div>
+                <p> Auteur </p>
+                <p> Commentaire </p>
+                <p> Vidéo </p>
+                <p> Date </p>
             </div>
-            <p> Auteur </p>
-            <p> Commentaire </p>
-            <p> Vidéo </p>
-            <p> Date </p>
+            <?php
+                GetComs();
+            ?>
+            <div class="box title_row border_up coms">
+                <p></p>
+                <p> Auteur </p>
+                <p> Commentaire </p>
+                <p> Vidéo </p>
+                <p> Date </p>
+            </div>
         </div>
-        <?php
-        GetComs();
-        ?>
-        <div class="box title_row border_up coms">
-            <p></p>
-            <p> Auteur </p>
-            <p> Commentaire </p>
-            <p> Vidéo </p>
-            <p> Date </p>
+        <div class="actions">
+            <input type="submit" class="delete_button" value="Supprimer" 
+                name="delete_coms" tabindex="200"></input>
         </div>
-    </div>
+    </form>
 </div>
 
 <script>
+    /*
     $(document).ready(function() {
         $('.toggle_select').click(function(){
             var t = $(this).attr('id');
@@ -72,6 +89,6 @@
                 });
             }
         });
-    });
+    });*/
 
 </script>
