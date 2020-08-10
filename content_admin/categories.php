@@ -19,7 +19,8 @@ if(isset($_POST["edit_cat"])){
     foreach ($_GET["edit"] as $val){
         EditCategoryName($val, $_POST["category_" . $val]);
     }
-    echo '<script>window.location.href = "'. GetThisUrl() .'";</script>';
+    $url = strtok($_SERVER["REQUEST_URI"], '?');
+    echo '<script>window.location.href = "'. $url .'?cat";</script>';
 }
 ?>
 
