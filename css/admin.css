@@ -52,15 +52,19 @@ textarea {
     border: 1px solid rgba(237, 40, 181);
     box-shadow: 0 0 10px 5px #ed28b5;;
     display: block;
-    position: fixed;
+    position: relative;
     background-color: #23282d;
     width: 500px;
     height: 400px;
-    margin-left: 50%;
-    margin-top: 250px;
+    top: 50%;
+    left: 50%;
 
     border-radius: 10px;
-    transform: translate(-50%);
+    transform: translate(-50%, -50%);
+}
+.connec_panel input:focus
+{
+    outline: none;
 }
 
 .connec_logo

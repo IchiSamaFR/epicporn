@@ -8,6 +8,8 @@ function CreateNewUser($mail, $username, $password){
 
 }
 
+//          -------------------- CONNECTIONS --------------------
+
 function Admin_Connection($username, $password){
 
     $username = CleanText($username);
@@ -37,6 +39,8 @@ function Admin_Connection($username, $password){
 function Admin_Disconnection(){
     unset($_SESSION['Admin']);
 }
+
+//          -------------------- VIDEOS --------------------
 
 function AddVideo($embed, $title, $cat){
 
@@ -132,7 +136,58 @@ function AddVideo($embed, $title, $cat){
         return ($res -> error);
     }
 }
+
+function DeleteVideos($videos){
+    $videos = CleanText($videos);
+
+    $videosToSql = "";
+    $videosMetaToSql = "";
+    $videosComsToSql = "";
+
+    $x = sizeof($videos);
+    foreach($videos as $vid){
+        $x = $x - 1;
+        $videosToSql = $videosToSql . "id=" . $vid . " ";
+        $videosMetaToSql = $videosMetaToSql . "post_id=" . $vid . " ";
+        $videosComsToSql = $videosComsToSql . "id_video=" . $vid . " ";
+
+        if($x != 0) {
+            $videosToSql = $videosToSql . "OR ";
+            $videosMetaToSql = $videosMetaToSql . "OR ";
+            $videosComsToSql = $videosComsToSql . "OR ";
+        }
+    }
+
+    //  Delete from categories
+    $request = "DELETE FROM `videos` 
+    WHERE " . $videosToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+    
+    //  Delete categories from meta videos
+    $request = "DELETE FROM `videos_meta` 
+    WHERE " . $videosMetaToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+
+    //  Delete categories from meta videos
+    $request = "DELETE FROM `coms` 
+    WHERE " . $videosComsToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+}
+
+//          -------------------- CATEGORIES --------------------
+
 function AddCategorie($name){
+    $name = CleanText($name);
+
     //  Create new video
     $request = "INSERT INTO `categories` 
     (`id`, `name`) 
@@ -178,11 +233,78 @@ function DeleteCategories($categories){
     }
 }
 
+function GetCategories($by){
+    if($by == "infos"){
+        $x = 0;
+        
+        $request = "SELECT id, name
+        FROM categories
+        ORDER BY name ASC
+        LIMIT 50";
+
+        $result = GetSQLRequest_NoFetchArray($request);
+
+        while($row = mysqli_fetch_array($result)){
+            ?>
+
+            <div class="box categories <?php
+            if ($x%2 == 0){
+                echo "pair";
+            }?> 
+            ">
+                <label class="container">
+                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
+                <p> <a href="?cat&edit=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
+            </div>
+            <?php
+
+            $x = $x + 1;
+        }
+    } 
+    else if ($by == "new_vid"){
+        $request = "SELECT id, name
+        FROM categories
+        ORDER BY name ASC";
+
+        $result = GetSQLRequest_NoFetchArray($request);
+
+        while($row = mysqli_fetch_array($result)){
+            ?>
+            
+                <label class="container"> <p> <?php echo $row["name"] ?> </p>
+                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
+            <?php
+        }
+    }
+}
+
+function GetCategoryName($id){
+    $id = CleanText($id);
+    $request = "SELECT name
+    FROM categories
+    WHERE id=" . $id;
+
+    $result = GetSQLRequest($request);
+    return $result[0];
+}
+
+function EditCategoryName($id, $name){
+    $id = CleanText($id);
+    $name = CleanText($name);
+    $request = "UPDATE categories
+    SET name='". $name ."'
+    WHERE id=". $id;
+
+    $result = SendSQLRequest($request);
+}
+
 //          -------------------- GET FUNCTIONS --------------------
 
 function GetInfos($type){
-    $dbh = BddConnect();
-
     /*  **********************TO ADD WHEN IT'S FINISHED****************************
 
 
@@ -297,56 +419,9 @@ function GetVideos($by){
     }
 }
 
-function GetCategories($by){
-    if($by == "infos"){
-        $x = 0;
-        
-        $request = "SELECT id, name
-        FROM categories
-        ORDER BY name ASC
-        LIMIT 50";
-
-        $result = GetSQLRequest_NoFetchArray($request);
-
-        while($row = mysqli_fetch_array($result)){
-            ?>
-
-            <div class="box categories <?php
-            if ($x%2 == 0){
-                echo "pair";
-            }?> 
-            ">
-                <label class="container">
-                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
-                  <span class="checkmark"></span>
-                </label>
-                <p> <a href="?cat&edit=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
-            </div>
-            <?php
-
-            $x = $x + 1;
-        }
-    } 
-    else if ($by == "new_vid"){
-        $request = "SELECT id, name
-        FROM categories
-        ORDER BY name ASC";
-
-        $result = GetSQLRequest_NoFetchArray($request);
-
-        while($row = mysqli_fetch_array($result)){
-            ?>
-            
-                <label class="container"> <p> <?php echo $row["name"] ?> </p>
-                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
-                  <span class="checkmark"></span>
-                </label>
-            <?php
-        }
-    }
-}
-
 function GetComs($page = 1, $rowPerPage = 20){
+    $page = CleanText($page);
+
     $x = 0;
     $pair = 0;
     
@@ -373,11 +448,10 @@ function GetComs($page = 1, $rowPerPage = 20){
             echo "pair";
         }?>
          coms">
-            <div class="toggle_select" id="<?php echo $row["coms_id"]; ?>" value="test">
-                <div class="toggle"> 
-                    <div id="toggle_btn" class="toggle_btn"> </div>
-                </div>
-            </div>
+            <label class="container">
+              <input type="checkbox" name="coms[]" value="<?php echo $row["coms_id"] ?>">
+              <span class="checkmark"></span>
+            </label>
             <div class="author">
                 <p> <?php echo $row["author"]; ?> </p>
             </div>
@@ -397,38 +471,99 @@ function GetComs($page = 1, $rowPerPage = 20){
         }
     }
 }
+function GetUsers($by = "infos"){
+    if($by == "infos"){
+        $x = 0;
+        
+        $request = "SELECT id, username, mail, premium, dateRegistred
+        FROM epic_users
+        ORDER BY dateRegistred ASC
+        LIMIT 50";
 
-function DeleteVideos($videos){
-    $videosToSql = "";
-    $videosMetaToSql = "";
+        $result = GetSQLRequest_NoFetchArray($request);
 
-    $x = sizeof($videos);
-    foreach($videos as $vid){
+        while($row = mysqli_fetch_array($result)){
+            if($row["premium"] == ""){
+                $row["premium"] = "null";
+            }
+            ?>
+
+            <div class="box coms <?php
+            if ($x%2 == 0){
+                echo "pair";
+            }?> 
+            ">
+                <label class="container">
+                  <input type="checkbox" name="users[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
+                <p> <a href=""><?php echo $row["username"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["mail"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["premium"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["dateRegistred"] ?> </a> </p>
+            </div>
+            <?php
+
+            $x = $x + 1;
+        }
+    }
+}
+
+function DeleteComs($coms){
+    $coms = CleanText($coms);
+
+    $comsToSql = "";
+
+    $x = sizeof($coms);
+    foreach($coms as $com){
         $x = $x - 1;
-        $videosToSql = $videosToSql . "id=" . $vid . " ";
-
-        $videosMetaToSql = $videosMetaToSql . "post_id=" . $vid . " ";
+        $comsToSql = $comsToSql . "id=" . $com . " ";
 
         if($x != 0) {
-            $videosToSql = $videosToSql . "OR ";
-            $videosMetaToSql = $videosMetaToSql . "OR ";
+            $comsToSql = $comsToSql . "OR ";
         }
     }
 
     //  Delete from categories
-    $request = "DELETE FROM `videos` 
-    WHERE " . $videosToSql;
-
-    if(!$res = SendSQLRequest($request)){
-        echo($res);
-    }
-    
-    //  Delete categories from meta videos
-    $request = "DELETE FROM `videos_meta` 
-    WHERE " . $videosMetaToSql;
+    $request = "DELETE FROM `coms` 
+    WHERE " . $comsToSql;
 
     if(!$res = SendSQLRequest($request)){
         echo($res);
     }
 }
+function DeleteUsers($users){
+
+    $usersToSql = "";
+    $usersComsToSql = "";
+
+    $x = sizeof($users);
+    foreach($users as $user){
+        $x = $x - 1;
+        $usersToSql = $usersToSql . "id=" . $user . " ";
+        $usersComsToSql = $usersComsToSql . "id_author=" . $user . " ";
+
+        if($x != 0) {
+            $usersToSql = $usersToSql . "OR ";
+            $usersComsToSql = $usersComsToSql . "OR ";
+        }
+    }
+
+    //  Delete from users
+    $request = "DELETE FROM `epic_users` 
+    WHERE " . $usersToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+
+    //  Delete from coms
+    $request = "DELETE FROM `coms` 
+    WHERE " . $usersComsToSql;
+
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+}
+
 ?>

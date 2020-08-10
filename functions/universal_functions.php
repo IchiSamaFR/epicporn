@@ -43,8 +43,15 @@ function GetSQLRequest_NoFetchArray($request){
 
 //  Fonction clean des texts afin d'eviter les injections sql etc...
 function CleanText($string){
-    $string = addslashes($string);
-    return $string;
+    if(is_array($string)){
+        foreach($string as $key => $val){
+            $string[$key] = addslashes($val);
+        }
+        return $string;
+    } else {
+        $string = addslashes($string);
+        return $string;
+    }
 }
 
 ?>

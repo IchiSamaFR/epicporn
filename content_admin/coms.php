@@ -14,11 +14,7 @@ if(isset($_POST["delete_coms"]) && isset($_POST["coms"])){
     <form method="post">
         <div class="table_list page">
             <div class="box title_row border_down coms">
-                <div class="toggle_select" id="all" value="test">
-                    <div class="toggle"> 
-                        <div id="toggle_" class="toggle_btn"> </div>
-                    </div>
-                </div>
+                <p></p>
                 <p> Auteur </p>
                 <p> Commentaire </p>
                 <p> Vidéo </p>

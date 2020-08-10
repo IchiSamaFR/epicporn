@@ -1,14 +1,25 @@
 
 <?php 
 
-if(!isset($_SESSION['cache_categories'])){
-    $_SESSION['cache_categories'] = "";
-}
 if(isset($_POST["add_cat"])){
     AddCategorie($_POST["category"]);
 }
 if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
     DeleteCategories($_POST["categories"]);
+}
+if(isset($_POST["edit"]) && isset($_POST["categories"])){
+    $get = "";
+    foreach ($_POST["categories"] as $val){
+        $get = $get . "&edit%5B%5D=" . $val;
+    }
+    echo '<script>window.location.href = "'. GetThisUrl() . $get .'";</script>';
+}
+
+if(isset($_POST["edit_cat"])){
+    foreach ($_GET["edit"] as $val){
+        EditCategoryName($val, $_POST["category_" . $val]);
+    }
+    echo '<script>window.location.href = "'. GetThisUrl() .'";</script>';
 }
 ?>
 
@@ -30,14 +41,42 @@ if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
                     </br>
 
                     <div>
-                        <input type="submit" class="add_button" href="admin.php?vid&new_vid" value="Ajouter la catégorie" 
+                        <input type="submit" class="add_button" value="Ajouter la catégorie" 
                         name="add_cat" tabindex="100"></input>
-                        <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
+                        <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
                     </div>
                 </form>
             </div>
-        <?php
+    <?php
+        //          -------------------- EDIT CAT --------------------
+        } else if(isset($_GET['edit'])){
+        ?>
+        <h1 class="page_title"> Modifier des catégories </h1>
+            <div class="box new_vid">
+                <form method="post">
+                    
+                    <?php
+                    foreach ($_GET["edit"] as $val){
+                        $name = GetCategoryName($val);
+                        echo '<h3> Ancien nom : '.$name.' </h3>';
+                        echo '<input class="textfield" type="text" placeholder="" 
+                        tabindex="10" size="" value="'. $name .'" id="cat_name" name="category_'. $val .'"></input>';
+                    }
+                    ?>
+
+                    </br>
+                    </br>
+
+                    <div>
+                        <input type="submit" class="add_button" value="Modifier les catégories" 
+                        name="edit_cat" tabindex="100"></input>
+                        <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
+                    </div>
+                </form>
+            </div>
+    <?php
         } else {
+            //          -------------------- SHOW ALL CAT --------------------
         ?>
         <div class="">
             <a class="right add_button" href="admin.php?cat&new_cat"> Ajouter une catégorie </a>
@@ -67,10 +106,10 @@ if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
                     <input type="submit" class="delete_button" value="Supprimer" 
                         name="delete_cat" tabindex="200"></input>
                     <input type="submit" class="add_button" value="Modifier" 
-                        name="modify_cat" tabindex="210"></input>
+                        name="edit" tabindex="210"></input>
             </div>
         </form>
-    <?php
+        <?php
         }
     ?>
 </div>

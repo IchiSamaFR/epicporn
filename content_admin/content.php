@@ -18,7 +18,7 @@
     } 
     else if(isset($_GET["users"]))
     {
-
+        include("users.php");
     } 
     else if(isset($_GET["cat"]))
     {
