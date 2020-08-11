@@ -523,7 +523,7 @@ input.button_enter:hover {
 
 .vid {
     height: 125px;
-    background: url(../img/samples/no-thumb.png) center center no-repeat;
+    /*background: url(../img/samples/no-thumb.png) center center no-repeat;*/
     background-size: cover;
 }
 .vid img {

@@ -29,6 +29,7 @@ function Admin_Connection($username, $password){
         $_SESSION['Admin'] = array(
             'login' => $username, 
             'pass' => $password,
+            'id' => $data['id'],
             'rank' => $data['rank']
         );
     } else {
@@ -46,28 +47,23 @@ function AddVideo($embed, $title, $cat){
 
     if($title == ""){
         return "Titre null";
+    } else if (!IsEmbed($embed)){
+        return "Impossible de récuperer l'embed";
     }
+
     $title = CleanText($title);
-
-
-    $thumb_url = "";
-    $thumb_array = explode('src="', $embed);
-    if(sizeof($thumb_array) > 1){
-        $thumb_array = explode('"', $thumb_array[1]);
-    } else {
-        return "Embed non correcte, aucune source détecté";
-    }
-
     $embedInsert = CleanText($embed);
+
+
     
     //  Create new video
     $request = "INSERT INTO `videos` 
     (`id`, `title`, `embed`, `date`, `author`, `status`, `url_name`) 
     VALUES 
-    (NULL, '".$title."', '". $embedInsert ."', (SELECT NOW()), '". $_SESSION["admin_user"] . "', 'published', '')";
+    (NULL, '".$title."', '". $embedInsert ."', (SELECT NOW()), '". $_SESSION['Admin']['id'] . "', 'published', '')";
 
-    if($res = SendSQLRequest($request)){
-        $last_id = $res->insert_id;
+    if($result = SendSQLRequest($request)){
+        $last_id = $result->insert_id;
 
         //  If there is a category
         if($cat != null){
@@ -89,52 +85,76 @@ function AddVideo($embed, $title, $cat){
             $request = rtrim($request, ", ");
             $request = $request . ";";
 
-            if(!$res = SendSQLRequest($request)){
-                echo($res);
+            if(!$result = SendSQLRequest($request)){
+                echo($result);
             }
         }
-
-
-        //  Thumbnail
-        $vid_url = $thumb_array[0];
-        if(stristr($vid_url, "txxx.com"))
-        {
-            $thumb_array = explode('/', $vid_url);
-            $thousand = $thumb_array[sizeof($thumb_array) - 2];
-            $thumb_url = "https://cdn37804682.ahacdn.me/contents/videos_screenshots/" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/288x162/1.jpg";
-        }
-        else if(stristr($vid_url, "upornia.com"))
-        {
-            $thumb_array = explode('/', $vid_url);
-            $thousand = $thumb_array[sizeof($thumb_array) - 2];
-            $thumb_url = "https://static2.upornia.org/contents/videos_screenshots/" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/268x201/1.jpg";
-        }
-        else if(stristr($vid_url, "hdzog.com"))
-        {
-            $thumb_array = explode('/', $vid_url);
-            $thousand = $thumb_array[sizeof($thumb_array) - 2];
-            $thumb_url = "https://cdn49752055.ahacdn.me/contents/videos_screenshots//" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/300x169/1.jpg";
-        }
-
+        
+        $thumb_url = GetThumbnail($embed);
         $request = "INSERT INTO `videos_meta` 
         (`meta_id`, `post_id`, `meta_key`, `meta_value`)
         VALUES (null, ". $last_id .",'thumbnail','". $thumb_url ."')
         ";
-        if(!$res = SendSQLRequest($request)){
-            echo($res);
+        if(!$result = SendSQLRequest($request)){
+            echo($result);
         }
         
         $request = "INSERT INTO `videos_meta` 
         (`meta_id`, `post_id`, `meta_key`, `meta_value`)
         VALUES (null, ". $last_id .",'views','0');";
 
-        if(!$res = SendSQLRequest($request)){
-            echo($res);
+        if(!$result = SendSQLRequest($request)){
+            echo($result);
         }
 
     } else {
-        return ($res -> error);
+        return ($result -> error);
     }
+}
+
+//  Check if the embed had a source
+function IsEmbed($string){
+    $thumb_array = explode('src="', $string);
+    if(sizeof($thumb_array) > 1){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//  Return the thumbnail
+function GetThumbnail($string){
+
+    $thumb_array = explode('src="', $string);
+    if(sizeof($thumb_array) > 1){
+        $thumb_array = explode('"', $thumb_array[1]);
+    } else {
+        return false;
+    }
+
+    //  Thumbnail
+    $vid_url = $thumb_array[0];
+    if(stristr($vid_url, "txxx.com"))
+    {
+        $thumb_array = explode('/', $vid_url);
+        $thousand = $thumb_array[sizeof($thumb_array) - 2];
+        $thumb_url = "https://cdn37804682.ahacdn.me/contents/videos_screenshots/" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/288x162/1.jpg";
+    }
+    else if(stristr($vid_url, "upornia.com"))
+    {
+        $thumb_array = explode('/', $vid_url);
+        $thousand = $thumb_array[sizeof($thumb_array) - 2];
+        $thumb_url = "https://static2.upornia.org/contents/videos_screenshots/" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/268x201/1.jpg";
+    }
+    else if(stristr($vid_url, "hdzog.com"))
+    {
+        $thumb_array = explode('/', $vid_url);
+        $thousand = $thumb_array[sizeof($thumb_array) - 2];
+        $thumb_url = "https://cdn49752055.ahacdn.me/contents/videos_screenshots//" . substr($thousand, 0, -3) . "000" . "/" . $thousand . "/300x169/1.jpg";
+    } else {
+        return false;
+    }
+    return $thumb_url;
 }
 
 function DeleteVideos($videos){
@@ -183,6 +203,60 @@ function DeleteVideos($videos){
     }
 }
 
+function GetVideos($by){
+    if($by == "infos"){
+        $x = 0;
+        
+        $request = "SELECT id, title, embed
+        FROM videos
+        LIMIT 50";
+
+        $result = GetSQLRequest_NoFetchArray($request);
+
+        while($row = mysqli_fetch_array($result)){
+            ?>
+
+            <div class="box 
+            <?php
+                if ($x%2 == 0){
+                    echo "pair";
+                }
+            ?> 
+            video">
+            
+                <label class="container">
+                  <input type="checkbox" name="videos[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
+                <p> <a href="?vid&edit[]=<?php echo $row["id"] ?>"><?php echo $row["title"] ?> </a> </p>
+                <div> 
+                    <?php 
+
+
+                    $secondRequest = "SELECT videos_meta.meta_value as id, categories.name as name
+                    FROM videos_meta
+                    INNER JOIN categories 
+                    ON videos_meta.meta_value = categories.id
+                    WHERE videos_meta.post_id=". $row["id"] .
+                    " ORDER BY name ASC";
+
+                    $secondResult = GetSQLRequest_NoFetchArray($secondRequest);
+
+                    echo '<p>';
+                    while($secondRow = mysqli_fetch_array($secondResult)){
+                        echo '<a href="">' . $secondRow['name'] . '</a> ';
+                    }
+                    echo '</p>';
+                    ?> 
+                </div>
+            </div>
+
+            <?php
+            $x = $x + 1;
+        }
+    }
+}
+
 function GetVideoTitle($id){
     $id = CleanText($id);
     $request = "SELECT title
@@ -202,6 +276,52 @@ function GetVideoEmbed($id){
     $result = GetSQLRequest($request);
     
     return $result[0];
+}
+
+function EditVideo($id, $title, $embed, $categories){
+    $id = CleanText($id);
+    $title = CleanText($title);
+
+    
+    if(!IsEmbed($embed)){
+        return "Embed non correcte";
+    }
+
+    $embedInsert = CleanText($embed);
+
+    $request = "UPDATE videos
+    SET title='". $title ."' AND embed='". $embed ."' AND author='". $_SESSION['Admin']['id'] ."'
+    WHERE id=". $id;
+
+    if($result = SendSQLRequest($request)){
+        $request = "DELETE FROM videos_meta
+        WHERE post_id=". $id . " AND meta_key='category'";
+
+        $result = SendSQLRequest($request);
+
+        //  If there is a category
+        if($categories != null){
+            $request = "INSERT INTO `videos_meta` 
+            (`meta_id`, `post_id`, `meta_key`, `meta_value`)
+            VALUES ";
+            
+            $x = 0;
+            //  Foreach categories, add it to the sql request
+            foreach ($categories as $val){
+                if($x > 0){
+                    $request = $request . ",";
+                }
+                $x ++;
+                if($val != ""){
+                    $request = $request . "(null, ". $id .",'category','". $val ."')";
+                }
+            }
+            $request = rtrim($request, ", ");
+            $request = $request . ";";
+
+            SendSQLRequest($request);
+        }
+    }
 }
 //          -------------------- CATEGORIES --------------------
 
@@ -279,14 +399,14 @@ function GetCategories($by, $id = -1){
                   <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
                   <span class="checkmark"></span>
                 </label>
-                <p> <a href="?cat&edit=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
+                <p> <a href="?cat&edit%5B%5D=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
             </div>
             <?php
 
             $x = $x + 1;
         }
     } 
-    else if ($by == "new_vid" && $id === -1){
+    else if ($by == "new_vid" && $id == -1){
         $request = "SELECT id, name
         FROM categories
         ORDER BY name ASC";
@@ -306,13 +426,14 @@ function GetCategories($by, $id = -1){
 
 
         $arrayCat = array();
+        $arrayCat[] = null;
         $request = "SELECT meta_value
         FROM videos_meta
         WHERE meta_key='category' AND post_id=" . $id;
 
         $result = GetSQLRequest_NoFetchArray($request);
         while($row = mysqli_fetch_array($result)){
-            array_push($arrayCat, $row['meta_value']);
+            $arrayCat[] = $row['meta_value'];
         }
 
 
@@ -325,7 +446,7 @@ function GetCategories($by, $id = -1){
         while($row = mysqli_fetch_array($result)){
             ?>
             
-                <label class="container"> <p> <?php echo $row["name"] ?> </p>
+                <label class="container"> <p> <?php echo $row["name"]; ?> </p>
                     <input type="checkbox" name="categories_<?php echo $id; ?>[]" value="<?php echo $row["id"] ?>" 
                     <?php 
                     if(array_search($row["id"], $arrayCat))
@@ -420,60 +541,6 @@ function GetInfos($type){
 
         $result = GetSQLRequest($request);
         return $result[0];
-    }
-}
-
-function GetVideos($by){
-    if($by == "infos"){
-        $x = 0;
-        
-        $request = "SELECT id, title, embed
-        FROM videos
-        LIMIT 50";
-
-        $result = GetSQLRequest_NoFetchArray($request);
-
-        while($row = mysqli_fetch_array($result)){
-            ?>
-
-            <div class="box 
-            <?php
-                if ($x%2 == 0){
-                    echo "pair";
-                }
-            ?> 
-            video">
-            
-                <label class="container">
-                  <input type="checkbox" name="videos[]" value="<?php echo $row["id"] ?>">
-                  <span class="checkmark"></span>
-                </label>
-                <p> <a href="?vid&edit=<?php echo $row["id"] ?>"><?php echo $row["title"] ?> </a> </p>
-                <div> 
-                    <?php 
-
-
-                    $secondRequest = "SELECT videos_meta.meta_value as id, categories.name as name
-                    FROM videos_meta
-                    INNER JOIN categories 
-                    ON videos_meta.meta_value = categories.id
-                    WHERE videos_meta.post_id=". $row["id"] .
-                    " ORDER BY name ASC";
-
-                    $secondResult = GetSQLRequest_NoFetchArray($secondRequest);
-
-                    echo '<p>';
-                    while($secondRow = mysqli_fetch_array($secondResult)){
-                        echo '<a href="">' . $secondRow['name'] . '</a> ';
-                    }
-                    echo '</p>';
-                    ?> 
-                </div>
-            </div>
-
-            <?php
-            $x = $x + 1;
-        }
     }
 }
 
