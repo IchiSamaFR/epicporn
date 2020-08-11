@@ -19,9 +19,6 @@ if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
     <?php
         //          -------------------- ADD A NEW VIDEO --------------------
         if(isset($_GET['new_vid'])){
-            if(isset($error)){
-                echo "<p>".$error . "</p>";
-            }
             ?>
 
             <h1 class="page_title"> Ajouter une vidéo </h1>
@@ -46,8 +43,49 @@ if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
                     </br>
 
                     <div>
-                        <input type="submit" class="add_button" href="admin.php?vid&new_vid" value="Ajouter la vidéo" 
+                        <input type="submit" class="add_button" value="Ajouter la vidéo" 
                         name="add_vid" tabindex="100"></input>
+                        <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
+                    </div>
+                </form>
+            </div>
+
+            <?php
+            //          -------------------- ADD A NEW VIDEO --------------------
+            } else if(isset($_GET['edit'])){
+            ?>
+
+            <h1 class="page_title"> Ajouter une vidéo </h1>
+            <div class="box new_vid">
+                <form method="post">
+
+                    <?php
+                    foreach ($_GET["edit"] as $val){
+                    ?>
+                        <h3> Ancien titre : <?php echo GetVideoTitle($val); ?> </h3>
+                        <input class="textfield" type="text" placeholder="" 
+                        tabindex="20" size="" value="<?php echo GetVideoTitle($val); ?>" id="vid_name" name="title_<?php echo $val; ?>"></input>
+                            
+                        <h3> Embed de la vidéo </h3>
+                        <textarea name="embed_<?php echo $val; ?>" id="embed" class="textfield"><?php echo GetVideoEmbed($val);?></textarea>
+
+
+                        <h3> Catégories associés </h3>
+                        <div class="choose_categories">
+                            <?php 
+                                GetCategories("new_vid", $val); 
+                            ?>
+                        </div>
+                    </br>
+                    </br>
+
+                    <?php
+                    }
+                    ?>
+
+                    <div>
+                        <input type="submit" class="add_button" value="Ajouter la vidéo" 
+                        name="edit_vid" tabindex="100"></input>
                         <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
                     </div>
                 </form>
@@ -56,40 +94,40 @@ if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
             <?php
         } else {
         //          -------------------- SHOW ALL VIDEOS --------------------
-    ?>
+        ?>
 
 
-    <div class="">
-        <a class="right add_button" href="admin.php?vid&new_vid"> Ajouter une vidéo </a>
-        
-        <h1 class="page_title"> Vidéos </h1>
-    </div>
-
-    <form method="post">
-        <div class="table_list page">
-            <div class="box title_row border_down video">
-                </br>
-                <p> Titre de la vidéo </p>
-                <p> Catégories </p>
-            </div>
-
-            <?php
-                GetVideos("infos");
-            ?>
+        <div class="">
+            <a class="right add_button" href="admin.php?vid&new_vid"> Ajouter une vidéo </a>
             
-            <div class="box title_row border_up video">
-                </br>
-                <p> Titre de la vidéo </p>
-                <p> Catégories </p>
+            <h1 class="page_title"> Vidéos </h1>
+        </div>
+
+        <form method="post">
+            <div class="table_list page">
+                <div class="box title_row border_down video">
+                    </br>
+                    <p> Titre de la vidéo </p>
+                    <p> Catégories </p>
+                </div>
+
+                <?php
+                    GetVideos("infos");
+                ?>
+                
+                <div class="box title_row border_up video">
+                    </br>
+                    <p> Titre de la vidéo </p>
+                    <p> Catégories </p>
+                </div>
             </div>
-        </div>
-        <div class="actions">
-                <input type="submit" class="delete_button" value="Supprimer" 
-                    name="delete_vid" tabindex="200"></input>
-                <input type="submit" class="add_button" value="Modifier" 
-                    name="modify_vid" tabindex="210"></input>
-        </div>
-    </form>
+            <div class="actions">
+                    <input type="submit" class="delete_button" value="Supprimer" 
+                        name="delete_vid" tabindex="200"></input>
+                    <input type="submit" class="add_button" value="Modifier" 
+                        name="modify_vid" tabindex="210"></input>
+            </div>
+        </form>
 
     <?php
         }

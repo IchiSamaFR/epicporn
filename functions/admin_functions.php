@@ -183,6 +183,26 @@ function DeleteVideos($videos){
     }
 }
 
+function GetVideoTitle($id){
+    $id = CleanText($id);
+    $request = "SELECT title
+    FROM videos
+    WHERE id=" . $id;
+
+    $result = GetSQLRequest($request);
+    return $result[0];
+}
+
+function GetVideoEmbed($id){
+    $id = CleanText($id);
+    $request = "SELECT embed
+    FROM videos
+    WHERE id=" . $id;
+
+    $result = GetSQLRequest($request);
+    
+    return $result[0];
+}
 //          -------------------- CATEGORIES --------------------
 
 function AddCategorie($name){
@@ -233,7 +253,10 @@ function DeleteCategories($categories){
     }
 }
 
-function GetCategories($by){
+function GetCategories($by, $id = -1){
+
+    $id = CleanText($id);
+
     if($by == "infos"){
         $x = 0;
         
@@ -263,7 +286,7 @@ function GetCategories($by){
             $x = $x + 1;
         }
     } 
-    else if ($by == "new_vid"){
+    else if ($by == "new_vid" && $id === -1){
         $request = "SELECT id, name
         FROM categories
         ORDER BY name ASC";
@@ -276,6 +299,41 @@ function GetCategories($by){
                 <label class="container"> <p> <?php echo $row["name"] ?> </p>
                   <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
                   <span class="checkmark"></span>
+                </label>
+            <?php
+        }
+    } else if ($by == "new_vid" && $id >= 0){
+
+
+        $arrayCat = array();
+        $request = "SELECT meta_value
+        FROM videos_meta
+        WHERE meta_key='category' AND post_id=" . $id;
+
+        $result = GetSQLRequest_NoFetchArray($request);
+        while($row = mysqli_fetch_array($result)){
+            array_push($arrayCat, $row['meta_value']);
+        }
+
+
+        $request = "SELECT id, name
+        FROM categories
+        ORDER BY name ASC";
+
+        $result = GetSQLRequest_NoFetchArray($request);
+
+        while($row = mysqli_fetch_array($result)){
+            ?>
+            
+                <label class="container"> <p> <?php echo $row["name"] ?> </p>
+                    <input type="checkbox" name="categories_<?php echo $id; ?>[]" value="<?php echo $row["id"] ?>" 
+                    <?php 
+                    if(array_search($row["id"], $arrayCat))
+                    {
+                        echo " checked";
+                    }
+                    ?>>
+                    <span class="checkmark"></span>
                 </label>
             <?php
         }
