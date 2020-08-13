@@ -29,8 +29,7 @@ function Admin_Connection($username, $password){
         $_SESSION['Admin'] = array(
             'login' => $username, 
             'pass' => $password,
-            'id' => $data['id'],
-            'rank' => $data['rank']
+            'id' => $data['id']
         );
     } else {
         return "Mauvais identifiants.";
@@ -39,6 +38,20 @@ function Admin_Connection($username, $password){
 
 function Admin_Disconnection(){
     unset($_SESSION['Admin']);
+}
+
+function Admin_GetRank($id){
+
+    $request = "SELECT ranks.rank_right as right
+    FROM ranks
+    INNER JOIN admin_users
+    ON ranks.id = admin_users.rank
+    WHERE admin_users.id=". $id;
+
+    $result = GetSQLRequest($request);
+
+    return $result[0];
+
 }
 
 //          -------------------- VIDEOS --------------------

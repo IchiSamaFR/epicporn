@@ -2,6 +2,9 @@
 
     <?php
 
+    echo Admin_GetRank($_SESSION["Auth"]["id"]);
+
+
     $_SESSION["admin_user"] = 13;
 
     if(isset($_GET["perso"]))
