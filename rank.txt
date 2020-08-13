@@ -1,0 +1,11 @@
+Dashboard 	: 0
+Perso		: 1
+Videos		: 2
+Categories	: 3
+Users		: 4
+Rank		: 5
+Publicity	: 6
+
+Read	: 1
+Write	: 2
+R/W	: 3
