@@ -42,7 +42,7 @@ function Admin_Disconnection(){
 
 function Admin_GetRank($id){
 
-    $request = "SELECT ranks.rank_right as right
+    $request = "SELECT ranks.rank_right as 'right'
     FROM ranks
     INNER JOIN admin_users
     ON ranks.id = admin_users.rank
@@ -639,6 +639,45 @@ function GetUsers($by = "infos"){
                 <p> <a href=""><?php echo $row["mail"] ?> </a> </p>
                 <p> <a href=""><?php echo $row["premium"] ?> </a> </p>
                 <p> <a href=""><?php echo $row["dateRegistred"] ?> </a> </p>
+            </div>
+            <?php
+
+            $x = $x + 1;
+        }
+    }
+}
+
+function GetAdminUsers($by = "infos"){
+    if($by == "infos"){
+        $x = 0;
+        
+        $request = "SELECT admin_users.id, admin_users.username, admin_users.mail, ranks.rank_name as rank, COUNT(videos.id) as publications
+        FROM admin_users
+    	INNER JOIN ranks
+    	ON admin_users.rank = ranks.id
+    	INNER JOIN videos
+    	ON admin_users.rank = videos.author
+        ORDER BY rank ASC
+        LIMIT 50";
+
+        $result = GetSQLRequest_NoFetchArray($request);
+
+        while($row = mysqli_fetch_array($result)){
+            ?>
+
+            <div class="box coms <?php
+            if ($x%2 == 0){
+                echo "pair";
+            }?> 
+            ">
+                <label class="container">
+                  <input type="checkbox" name="users[]" value="<?php echo $row["id"] ?>">
+                  <span class="checkmark"></span>
+                </label>
+                <p> <a href=""><?php echo $row["username"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["mail"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["rank"] ?> </a> </p>
+                <p> <a href=""><?php echo $row["publications"] ?> </a> </p>
             </div>
             <?php
 
