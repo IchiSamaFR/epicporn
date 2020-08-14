@@ -1,11 +1,11 @@
-Dashboard 	: 0
-Perso		: 1
-Videos		: 2
-Categories	: 3
-Coms		: 4
-Admin_Users	: 5
-Users		: 6
-Publicity	: 7
+Dashboard 	: Auto 1
+Perso		: 0
+Videos		: 1
+Categories	: 2
+Coms		: 3
+Admin_Users	: 4
+Users		: 5
+Publicity	: 6
 
 Read	: 1
 Write	: 2
