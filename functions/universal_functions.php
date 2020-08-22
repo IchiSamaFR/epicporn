@@ -10,7 +10,13 @@ function GetThisUrl(){
 
 //          -------------------- SQL --------------------
 
-function SendSQLRequest($request){
+/**
+ * Send a SQL request without request of return
+ *
+ * @param  string $request
+ * @return void
+ */
+function SendSQLRequest(string $request){
     $dbh = BddConnect();
     if($result = mysqli_query($dbh, $request)){
         return $dbh;
@@ -19,7 +25,13 @@ function SendSQLRequest($request){
     }
 }
 
-function GetSQLRequest($request){
+/**
+ * GetSQLRequest first result
+ *
+ * @param  string $request
+ * @return string
+ */
+function GetSQLRequest(string $request){
     $dbh = BddConnect();
     if($result = mysqli_query($dbh, $request)){
         $lines = mysqli_fetch_row($result);
@@ -30,7 +42,13 @@ function GetSQLRequest($request){
     }
 }
 
-function GetSQLRequest_NoFetchArray($request){
+/**
+ * GetSQLRequest result without fetch
+ *
+ * @param  string $request
+ * @return mysqli_query
+ */
+function GetSQLRequest_NoFetchArray(string $request){
     $dbh = BddConnect();
 
     if($result = mysqli_query($dbh, $request))
@@ -41,8 +59,13 @@ function GetSQLRequest_NoFetchArray($request){
     }
 }
 
-//  Fonction clean des texts afin d'eviter les injections sql etc...
-function CleanText($string){
+/**
+ * Clean Text to avoid SQL Injections
+ *
+ * @param  mixed $string It could be an array like a string
+ * @return string Get result with slashes
+ */
+function CleanText(mixed $string){
     if(is_array($string)){
         foreach($string as $key => $val){
             $string[$key] = addslashes($val);

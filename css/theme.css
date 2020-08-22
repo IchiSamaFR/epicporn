@@ -19,9 +19,6 @@ body
 .blur {
     filter: blur(8px);
 }
-.censure {
-    filter: blur(20px);
-}
 
 .disable {
     display: none;
@@ -750,4 +747,16 @@ ul {
 
 .single_vid_player .footer_vid a.category:hover {
     background-color: #ed28b5;
+}
+
+
+
+.censure .show_vids {
+    filter: blur(12px);
+}
+.censure .ads {
+    filter: blur(12px);
+}
+.censure .responsive_player {
+    filter: blur(12px);
 }

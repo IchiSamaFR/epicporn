@@ -2,7 +2,7 @@
 <?php 
 
 if(isset($_POST["add_cat"])){
-    AddCategorie($_POST["category"]);
+    AddCategory($_POST["category"]);
 }
 if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
     DeleteCategories($_POST["categories"]);

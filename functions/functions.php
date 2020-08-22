@@ -2,12 +2,23 @@
 
 require_once(__DIR__ . '/../config.php');
 
+/**
+ * Get actual url without GET
+ *
+ * @return string
+ */
 function GetUrl(){
     $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
     return $protocol . $_SERVER['SERVER_NAME'] . strtok($_SERVER["REQUEST_URI"],'?');
 }
 
-function GetVideo_Name($id){
+/**
+ * Get Video name by the id
+ *
+ * @param  int $id
+ * @return string
+ */
+function GetVideo_Name(int $id){
 
     $request = "SELECT title
     FROM videos
@@ -17,7 +28,15 @@ function GetVideo_Name($id){
 
     return $result[0];
 }
-function GetVideo_Categories($id){
+
+
+/**
+ * Get Categories by the video id and display it as a list
+ *
+ * @param  int $id
+ * @return mixed
+ */
+function GetVideo_Categories(int $id){
 
     $request = "SELECT categories.name as cat_name
     FROM categories
@@ -31,7 +50,14 @@ function GetVideo_Categories($id){
         echo '<a href="" class="category">'.$row["cat_name"].'</a>';
     }
 }
-function GetVideo_Embed($id){
+
+/**
+ * Get Video Embed by the id
+ *
+ * @param  int $id
+ * @return string
+ */
+function GetVideo_Embed(int $id){
 
     $request = "SELECT embed
     FROM videos
@@ -41,7 +67,14 @@ function GetVideo_Embed($id){
 
     return $result[0];
 }
-function GetVideo_Views($id){
+
+/**
+ * Get Video Views by the id
+ *
+ * @param  int $id
+ * @return int
+ */
+function GetVideo_Views(int $id){
 
     $request = "SELECT meta_value
     FROM videos_meta
@@ -52,7 +85,13 @@ function GetVideo_Views($id){
     return $result[0];
 }
 
-function AddView($id){
+/**
+ * Add a view to the video
+ *
+ * @param  int $id
+ * @return void
+ */
+function AddView(int $id){
     
     $request = "UPDATE videos_meta
     SET meta_value = meta_value + 1
@@ -64,7 +103,15 @@ function AddView($id){
 }
 
 
-function GetVideos($orderby){
+/**
+ * Display videos by 
+ * date : Order by date
+ * views : Oreder by views
+ *
+ * @param  string $orderby
+ * @return mixed
+ */
+function GetVideos(string $orderby){
 
     $request = "SELECT videos.id as id, videos.title as title, videos_meta.meta_value as thumbnail
     FROM videos
@@ -117,7 +164,13 @@ function GetVideos($orderby){
 }
 
 
-function GetNavBar($v_perpage){
+/**
+ * Get the navigation bar between pages
+ *
+ * @param  int $v_perpage videos per pages
+ * @return mixed
+ */
+function GetNavBar(int $v_perpage){
     $videos = GetVideos_Number();
     $corrector = 0;
 
@@ -290,6 +343,11 @@ function GetNavBar($v_perpage){
 }
 
 
+/**
+ * Get Number of all videos
+ *
+ * @return int
+ */
 function GetVideos_Number(){
     $request = "SELECT COUNT(id) FROM `videos`";
 

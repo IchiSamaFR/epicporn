@@ -2,15 +2,28 @@
 
 require_once(__DIR__ . '/../config.php');
 
+ /**
+  * Gere les fonctions admins
+  *
+  * @author  Jordan De Sousa Oliveira <djordan-dsousa@hotmail.fr>
+  *
+  */
 
-function CreateNewUser($mail, $username, $password){
-    $dbh = BddConnect();
-
-}
 
 //          -------------------- CONNECTIONS --------------------
 
-function Admin_Connection($username, $password){
+
+/**
+ * Permit the connection of admins
+ *
+ * 
+ * @param string $username Username
+ * @param string $password Password
+ * 
+ * @return void
+ */
+
+function Admin_Connection(string $username, string $password){
 
     $username = CleanText($username);
     $password = CleanText($password);
@@ -36,11 +49,22 @@ function Admin_Connection($username, $password){
     }
 }
 
+/**
+ * Permit the disconnection of admins
+ */
 function Admin_Disconnection(){
     unset($_SESSION['Admin']);
 }
 
-function Admin_GetRank($id){
+/**
+ * Get the rank of an admin
+ *
+ * 
+ * @param int $id Id of the admin
+ * 
+ * @return string Return of the admin rank
+ */
+function Admin_GetRank(int $id){
 
     $request = "SELECT ranks.rank_right as 'right'
     FROM ranks
@@ -56,7 +80,16 @@ function Admin_GetRank($id){
 
 //          -------------------- VIDEOS --------------------
 
-function AddVideo($embed, $title, $cat){
+/**
+ * Permit to add a video to the database
+ *
+ * @param  string $embed
+ * @param  string $title
+ * @param  array $cat
+ * 
+ * @return void
+ */
+function AddVideo(string $embed, string $title, array $cat){
 
     if($title == ""){
         return "Titre null";
@@ -125,8 +158,13 @@ function AddVideo($embed, $title, $cat){
     }
 }
 
-//  Check if the embed had a source
-function IsEmbed($string){
+/**
+ * Check if the string is an embed
+ *
+ * @param  string $string
+ * @return bool
+ */
+function IsEmbed(string $string){
     $thumb_array = explode('src="', $string);
     if(sizeof($thumb_array) > 1){
         return true;
@@ -135,8 +173,13 @@ function IsEmbed($string){
     }
 }
 
-//  Return the thumbnail
-function GetThumbnail($string){
+/**
+ * Get the thumbnail of an embed
+ *
+ * @param  string $string
+ * @return string
+ */
+function GetThumbnail(string $string){
 
     $thumb_array = explode('src="', $string);
     if(sizeof($thumb_array) > 1){
@@ -170,7 +213,13 @@ function GetThumbnail($string){
     return $thumb_url;
 }
 
-function DeleteVideos($videos){
+/**
+ * Delete all videos by array id
+ *
+ * @param  array $videos
+ * @return void
+ */
+function DeleteVideos(array $videos){
     $videos = CleanText($videos);
 
     $videosToSql = "";
@@ -216,7 +265,14 @@ function DeleteVideos($videos){
     }
 }
 
-function GetVideos($by){
+/**
+ * Get Video by
+ * infos : Get a list of all videos
+ *
+ * @param  string $by
+ * @return mixed
+ */
+function GetVideos(string $by){
     if($by == "infos"){
         $x = 0;
         
@@ -270,7 +326,13 @@ function GetVideos($by){
     }
 }
 
-function GetVideoTitle($id){
+/**
+ * Get the title of an video by id
+ *
+ * @param  int $id
+ * @return string
+ */
+function GetVideoTitle(int $id){
     $id = CleanText($id);
     $request = "SELECT title
     FROM videos
@@ -280,7 +342,13 @@ function GetVideoTitle($id){
     return $result[0];
 }
 
-function GetVideoEmbed($id){
+/**
+ * Get embed of the video by id
+ *
+ * @param  int $id
+ * @return string
+ */
+function GetVideoEmbed(int $id){
     $id = CleanText($id);
     $request = "SELECT embed
     FROM videos
@@ -291,7 +359,16 @@ function GetVideoEmbed($id){
     return $result[0];
 }
 
-function EditVideo($id, $title, $embed, $categories){
+/**
+ * Change values from a video id
+ *
+ * @param  int $id
+ * @param  string $title
+ * @param  string $embed
+ * @param  array $categories
+ * @return void
+ */
+function EditVideo(int $id, string $title, string $embed, array $categories){
     $id = CleanText($id);
     $title = CleanText($title);
 
@@ -338,7 +415,13 @@ function EditVideo($id, $title, $embed, $categories){
 }
 //          -------------------- CATEGORIES --------------------
 
-function AddCategorie($name){
+/**
+ * Add a category
+ *
+ * @param  string $name
+ * @return void
+ */
+function AddCategory(string $name){
     $name = CleanText($name);
 
     //  Create new video
@@ -352,7 +435,13 @@ function AddCategorie($name){
     }
 }
 
-function DeleteCategories($categories){
+/**
+ * Delete categories by array id
+ *
+ * @param  array $categories
+ * @return void
+ */
+function DeleteCategories(array $categories){
 
     $categoriesToSql = "";
     $videosCatToSql = "";
@@ -386,7 +475,17 @@ function DeleteCategories($categories){
     }
 }
 
-function GetCategories($by, $id = -1){
+/**
+ * Select a category by
+ * infos : Get all categories in a list
+ * new_vid : Get all categories in an other type of list
+ * new_vid : Get all categories in an other type of list with id of video to show active categories
+ *
+ * @param  string $by
+ * @param  int $id  Id of the video you want to modify if there is not let it null
+ * @return void
+ */
+function GetCategories(string $by, int $id = -1){
 
     $id = CleanText($id);
 
@@ -474,7 +573,13 @@ function GetCategories($by, $id = -1){
     }
 }
 
-function GetCategoryName($id){
+/**
+ * Get Category name by the id
+ *
+ * @param  int $id
+ * @return void
+ */
+function GetCategoryName(int $id){
     $id = CleanText($id);
     $request = "SELECT name
     FROM categories
@@ -484,7 +589,14 @@ function GetCategoryName($id){
     return $result[0];
 }
 
-function EditCategoryName($id, $name){
+/**
+ * Edit category name
+ *
+ * @param  int $id
+ * @param  string $name
+ * @return void
+ */
+function EditCategoryName(int $id, string $name){
     $id = CleanText($id);
     $name = CleanText($name);
     $request = "UPDATE categories
@@ -496,13 +608,13 @@ function EditCategoryName($id, $name){
 
 //          -------------------- GET FUNCTIONS --------------------
 
-function GetInfos($type){
-    /*  **********************TO ADD WHEN IT'S FINISHED****************************
-
-
-    if(isset($_SESSION["admin_rank"]) && $_SESSION["admin_rank"] <= 1){
-
-    }*/
+/**
+ * Get infos for the dashboard like total view, like ratio...
+ *
+ * @param  string $type Type of informations to get
+ * @return string
+ */
+function GetInfos(string $type){
     
     if($type == "videos_count"){
         $request = "SELECT count(*) 
@@ -557,7 +669,14 @@ function GetInfos($type){
     }
 }
 
-function GetComs($page = 1, $rowPerPage = 20){
+/**
+ * Get coms of users
+ *
+ * @param  int $page
+ * @param  int $rowPerPage
+ * @return mixed
+ */
+function GetComs(int $page = 1, int $rowPerPage = 20){
     $page = CleanText($page);
 
     $x = 0;
@@ -609,7 +728,16 @@ function GetComs($page = 1, $rowPerPage = 20){
         }
     }
 }
-function GetUsers($by = "infos"){
+
+
+/**
+ * Get users by
+ * infos : Get a list of all users
+ *
+ * @param  string $by
+ * @return mixed
+ */
+function GetUsers(string $by = "infos"){
     if($by == "infos"){
         $x = 0;
         
@@ -647,7 +775,14 @@ function GetUsers($by = "infos"){
     }
 }
 
-function GetAdminUsers($by = "infos"){
+/**
+ * Get admins by
+ * infos : Get a list of all users
+ *
+ * @param  string $by
+ * @return mixed
+ */
+function GetAdminUsers(string $by = "infos"){
     if($by == "infos"){
         $x = 0;
         
@@ -686,7 +821,13 @@ function GetAdminUsers($by = "infos"){
     }
 }
 
-function DeleteComs($coms){
+/**
+ * Delete coms by array id
+ *
+ * @param  array $coms
+ * @return void
+ */
+function DeleteComs(array $coms){
     $coms = CleanText($coms);
 
     $comsToSql = "";
@@ -709,7 +850,15 @@ function DeleteComs($coms){
         echo($res);
     }
 }
-function DeleteUsers($users){
+
+/**
+ * Delete users by array id
+ *
+ * @param  array $users
+ * @return void
+ */
+function DeleteUsers(array $users){
+    $users = CleanText($users);
 
     $usersToSql = "";
     $usersComsToSql = "";

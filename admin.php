@@ -13,6 +13,8 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+		<?php //<link rel="shortcut icon" href="icon.ico" /> 
+		?>
 	    <link rel="stylesheet" type="text/css" href="css/admin.css" />
 	    <meta charset="utf-8">
 		<meta name="EpicPorn" content="EpicPorn">

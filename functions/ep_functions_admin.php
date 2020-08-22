@@ -12,15 +12,6 @@ require __DIR__ . '/../tools/PHPMailer/src/PHPMailer.php';
 
 require __DIR__ . '/../tools/PHPMailer/src/SMTP.php';
 
-
-//  Fonction clean des texts afin d'eviter les injections sql etc...
-function CleanText($string){
-    $string = trim($string);
-    $string = stripslashes($string);
-    $string = htmlspecialchars($string);
-    return $string;
-}
-
 //  Creation de la clé de confirmation
 function CreateConfirmationKey(){
     $nbr = 24;
