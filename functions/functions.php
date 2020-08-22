@@ -108,10 +108,10 @@ function AddView(int $id){
  * date : Order by date
  * views : Oreder by views
  *
- * @param  string $orderby
+ * @param  array $orderby
  * @return mixed
  */
-function GetVideos(string $orderby){
+function GetVideos(array $orderby){
 
     $request = "SELECT videos.id as id, videos.title as title, videos_meta.meta_value as thumbnail
     FROM videos

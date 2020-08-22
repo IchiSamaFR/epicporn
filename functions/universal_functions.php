@@ -65,7 +65,7 @@ function GetSQLRequest_NoFetchArray(string $request){
  * @param  mixed $string It could be an array like a string
  * @return string Get result with slashes
  */
-function CleanText(mixed $string){
+function CleanText($string){
     if(is_array($string)){
         foreach($string as $key => $val){
             $string[$key] = addslashes($val);
