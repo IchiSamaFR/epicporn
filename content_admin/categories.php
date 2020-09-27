@@ -28,7 +28,7 @@ if(isset($_POST["edit_cat"])){
 <div class="centered">
     <?php
         //          -------------------- ADD A NEW CAT --------------------
-        if(isset($_GET['new_cat'])){
+        if(isset($_GET['new_cat']) && $rank_perm[2] > 1){
         ?>
         <h1 class="page_title"> Ajouter une catégorie </h1>
             <form method="post">
@@ -46,7 +46,7 @@ if(isset($_POST["edit_cat"])){
             </form>
     <?php
         //          -------------------- EDIT CAT --------------------
-        } else if(isset($_GET['edit'])){
+        } else if(isset($_GET['edit']) && $rank_perm[2] > 1){
         ?>
         <h1 class="page_title"> Modifier des catégories </h1>
             <form method="post">
@@ -57,7 +57,6 @@ if(isset($_POST["edit_cat"])){
                     ?>
 
                 <div class="box new_vid">
-                    
                         <h3> Ancien nom : <?php echo $name ?> </h3>
                         <input class="textfield" type="text" placeholder="" 
                         tabindex="10" size="" value="<?php echo $name ?>" id="cat_name" name="category_<?php echo $val ?>"></input>
@@ -90,9 +89,7 @@ if(isset($_POST["edit_cat"])){
                 </div>
 
                 <?php
-
-                GetCategories("infos");
-
+                    GetCategories("infos");
                 ?>
 
                 <div class="box title_row border_up categories">
@@ -100,12 +97,30 @@ if(isset($_POST["edit_cat"])){
                     <p> Nom de la catégorie </p>
                 </div>
             </div>
+
+            <?php
+            if($rank_perm[2] > 1){
+            ?>
+
             <div class="actions">
                     <input type="submit" class="delete_button" value="Supprimer" 
                         name="delete_cat" tabindex="200"></input>
                     <input type="submit" class="add_button" value="Modifier" 
                         name="edit" tabindex="210"></input>
             </div>
+            
+            <?php
+            }
+            else 
+            {
+            ?>
+
+            <div class="actions">
+            </div>
+
+            <?php
+            }
+            ?>
         </form>
         <?php
         }

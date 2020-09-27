@@ -33,7 +33,7 @@ if(isset($_POST["edit_vid"])){
 
     <?php
         //          -------------------- ADD A NEW VIDEO --------------------
-        if(isset($_GET['new_vid'])){
+        if(isset($_GET['new_vid']) && $rank_perm[1] > 1){
             ?>
 
             <h1 class="page_title"> Ajouter une vidéo </h1>
@@ -67,7 +67,7 @@ if(isset($_POST["edit_vid"])){
 
     <?php
             //          -------------------- EDIT VIDEO --------------------
-            } else if(isset($_GET['edit'])){
+            } else if(isset($_GET['edit']) && $rank_perm[1] > 1){
             ?>
 
             <h1 class="page_title"> Ajouter une vidéo </h1>
@@ -134,12 +134,18 @@ if(isset($_POST["edit_vid"])){
                     <p> Catégories </p>
                 </div>
             </div>
-            <div class="actions">
-                    <input type="submit" class="delete_button" value="Supprimer" 
-                        name="delete_vid" tabindex="200"></input>
-                    <input type="submit" class="add_button" value="Modifier" 
-                        name="modify_vid" tabindex="210"></input>
-            </div>
+            
+            <?php if($rank_perm[1] > 1){ ?>
+                <div class="actions">
+                        <input type="submit" class="delete_button" value="Supprimer" 
+                            name="delete_vid" tabindex="200"></input>
+                        <input type="submit" class="add_button" value="Modifier" 
+                            name="modify_vid" tabindex="210"></input>
+                </div>
+            <?php } else { ?>
+                <div class="actions">
+                </div>
+            <?php } ?>
         </form>
 
     <?php

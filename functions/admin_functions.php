@@ -10,6 +10,9 @@ require_once(__DIR__ . '/../config.php');
   */
 
 
+
+
+
 //          -------------------- CONNECTIONS --------------------
 
 
@@ -273,6 +276,8 @@ function DeleteVideos(array $videos){
  * @return mixed
  */
 function GetVideos(string $by){
+    $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
+
     if($by == "infos"){
         $x = 0;
         
@@ -293,11 +298,26 @@ function GetVideos(string $by){
             ?> 
             video">
             
-                <label class="container">
-                  <input type="checkbox" name="videos[]" value="<?php echo $row["id"] ?>">
-                  <span class="checkmark"></span>
-                </label>
-                <p> <a href="?vid&edit[]=<?php echo $row["id"] ?>"><?php echo $row["title"] ?> </a> </p>
+
+                <?php
+                if($rank_perm[1] > 1){
+                ?>
+                    <label class="container">
+                        <input type="checkbox" name="videos[]" value="<?php echo $row["id"] ?>">
+                        <span class="checkmark"></span>
+                    </label>
+                    <p> <a href="?vid&edit[]=<?php echo $row["id"] ?>"><?php echo $row["title"] ?> </a> </p>
+                <?php
+                }
+                else
+                {
+                ?>
+                    <p></p>
+                    <p> <?php echo $row["title"] ?> </p>
+                <?php
+                }
+                ?>
+
                 <div> 
                     <?php 
 
@@ -313,7 +333,14 @@ function GetVideos(string $by){
 
                     echo '<p>';
                     while($secondRow = mysqli_fetch_array($secondResult)){
-                        echo '<a href="">' . $secondRow['name'] . '</a> ';
+
+                        if($rank_perm[2] > 1)
+                        {
+                            echo '<a href="?cat&edit%5B%5D='.$secondRow["id"].'">' . $secondRow['name'] . '</a>';
+                        }
+                        else {
+                            echo $secondRow['name'] . ' ';
+                        }
                     }
                     echo '</p>';
                     ?> 
@@ -486,6 +513,7 @@ function DeleteCategories(array $categories){
  * @return void
  */
 function GetCategories(string $by, int $id = -1){
+    $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
 
     $id = CleanText($id);
 
@@ -507,11 +535,21 @@ function GetCategories(string $by, int $id = -1){
                 echo "pair";
             }?> 
             ">
+                <?php if($rank_perm[2] > 1){?>
                 <label class="container">
-                  <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
-                  <span class="checkmark"></span>
+                    <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
+                    <span class="checkmark"></span>
                 </label>
                 <p> <a href="?cat&edit%5B%5D=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
+                <?php 
+                }
+                else {
+                ?>
+                    <p></p>
+                    <p><?php echo $row["name"] ?></p>
+                <?php
+                }
+                ?>
             </div>
             <?php
 
