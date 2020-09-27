@@ -46,7 +46,7 @@ function NullGet(){
     <form method="post" action="" id="loginform" name="loginform">
         <input type="submit" class="disconnect right" tabindex="0" value="Se déconnecter" id="disconnect" name="disconnect">
     </form>
-    <p class="user_pres right"> Connecté : xxxx <div class="img"></div></p>
+    <p class="user_pres right"> Connecté : <?php echo $_SESSION['Admin']['login']?> <div class="img"></div></p>
 </div>
 
 <?php

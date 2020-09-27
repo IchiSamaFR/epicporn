@@ -71,12 +71,12 @@ if(isset($_POST["edit_vid"])){
             ?>
 
             <h1 class="page_title"> Ajouter une vidéo </h1>
-            <div class="box new_vid">
-                <form method="post">
+            <form method="post">
+                <?php
+                foreach ($_GET["edit"] as $val){
+                ?>
+                <div class="box new_vid">
 
-                    <?php
-                    foreach ($_GET["edit"] as $val){
-                    ?>
                         <h3> Ancien titre : <?php echo GetVideoTitle($val); ?> </h3>
                         <input class="textfield" type="text" placeholder="" 
                         tabindex="20" size="" value="<?php echo GetVideoTitle($val); ?>" id="vid_name" name="title_<?php echo $val; ?>"></input>
@@ -91,20 +91,18 @@ if(isset($_POST["edit_vid"])){
                                 GetCategories("new_vid", $val); 
                             ?>
                         </div>
-                    </br>
-                    </br>
 
-                    <?php
-                    }
-                    ?>
+                </div>
+                <?php
+                }
+                ?>
 
-                    <div>
-                        <input type="submit" class="add_button" value="Editer les vidéos" 
-                        name="edit_vid" tabindex="100"></input>
-                        <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
-                    </div>
-                </form>
-            </div>
+                <div class="actions">
+                    <input type="submit" class="add_button" value="Editer les vidéos" 
+                    name="edit_vid" tabindex="100"></input>
+                    <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
+                </div>
+            </form>
 
     <?php
         } else {

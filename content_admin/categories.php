@@ -31,50 +31,47 @@ if(isset($_POST["edit_cat"])){
         if(isset($_GET['new_cat'])){
         ?>
         <h1 class="page_title"> Ajouter une catégorie </h1>
-            <div class="box new_vid">
-                <form method="post">
-
+            <form method="post">
+                <div class="box new_vid">
                     <h3> Nom de la catégorie </h3>
                     <input class="textfield" type="text" placeholder="" 
-                    tabindex="10" size="" value="" id="cat_name" name="category"></input>
+                        tabindex="10" size="" value="" id="cat_name" name="category"></input>
+                </div>
 
-                    </br>
-                    </br>
-
-                    <div>
-                        <input type="submit" class="add_button" value="Ajouter la catégorie" 
-                        name="add_cat" tabindex="100"></input>
-                        <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
-                    </div>
-                </form>
-            </div>
+                <div class="actions">
+                    <input type="submit" class="add_button" value="Ajouter la catégorie" 
+                    name="add_cat" tabindex="100"></input>
+                    <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
+                </div>
+            </form>
     <?php
         //          -------------------- EDIT CAT --------------------
         } else if(isset($_GET['edit'])){
         ?>
         <h1 class="page_title"> Modifier des catégories </h1>
-            <div class="box new_vid">
-                <form method="post">
-                    
-                    <?php
-                    foreach ($_GET["edit"] as $val){
-                        $name = GetCategoryName($val);
-                        echo '<h3> Ancien nom : '.$name.' </h3>';
-                        echo '<input class="textfield" type="text" placeholder="" 
-                        tabindex="10" size="" value="'. $name .'" id="cat_name" name="category_'. $val .'"></input>';
-                    }
+            <form method="post">
+                <?php
+                foreach ($_GET["edit"] as $val)
+                { 
+                    $name = GetCategoryName($val);
                     ?>
 
-                    </br>
-                    </br>
+                <div class="box new_vid">
+                    
+                        <h3> Ancien nom : <?php echo $name ?> </h3>
+                        <input class="textfield" type="text" placeholder="" 
+                        tabindex="10" size="" value="<?php echo $name ?>" id="cat_name" name="category_<?php echo $val ?>"></input>
+                </div>
+                <?php
+                }
+                ?>
 
-                    <div>
-                        <input type="submit" class="add_button" value="Modifier les catégories" 
-                        name="edit_cat" tabindex="100"></input>
-                        <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
-                    </div>
-                </form>
-            </div>
+                <div class="actions">
+                    <input type="submit" class="add_button" value="Modifier les catégories" 
+                    name="edit_cat" tabindex="100"></input>
+                    <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
+                </div>
+            </form>
     <?php
         } else {
             //          -------------------- SHOW ALL CAT --------------------
