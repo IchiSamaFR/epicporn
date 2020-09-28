@@ -355,4 +355,28 @@ function GetVideos_Number(){
     return $result[0];
 }
 
+
+function GetAds(int $id = -1){
+    if($id != -1)
+    {
+        $request = "SELECT frame 
+        FROM `ads` 
+        WHERE id=". $id ."
+        LIMIT 1";
+    }
+    else 
+    {
+        $request = "SELECT frame 
+        FROM `ads` 
+        ORDER BY RAND()
+        LIMIT 1";
+    }
+
+    $result = GetSQLRequest($request);
+    return $result[0];
+}
+
+
+
+
 ?>

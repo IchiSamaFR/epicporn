@@ -37,7 +37,7 @@ a:hover {
 }
 
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .center_mid {
         width: 94%;
         height: 100%;
@@ -45,7 +45,7 @@ a:hover {
         transform: translate(-50%);
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .center_mid {
         width: 1200px;
         height: 100%;
@@ -57,7 +57,7 @@ a:hover {
 
 /* --------------------18OLD-------------------- */
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
 
     .popup .logo
     {
@@ -107,7 +107,7 @@ a:hover {
         color: white;
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
 
     .popup .logo
     {
@@ -204,7 +204,7 @@ input.button_enter:hover {
     background-color: rgb(35, 35, 35);
 }
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .logo_btn
     {
         margin-right: -10px;
@@ -224,7 +224,7 @@ input.button_enter:hover {
     }
 }
 
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .logo_btn
     {
         float: left;
@@ -260,7 +260,7 @@ input.button_enter:hover {
     background-color: rgb(65, 65, 65);
 }
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .nav_menu
     {
         padding-top: 15px;
@@ -338,7 +338,7 @@ input.button_enter:hover {
         display: block;
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .nav_menu
     {
         padding-top: 15px;
@@ -407,7 +407,7 @@ input.button_enter:hover {
     margin-top: 7px;
 }
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .c80c20{
         width: 100%;
     }
@@ -429,7 +429,7 @@ input.button_enter:hover {
         grid-gap: 10px;
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .c80c20{
         width: 100%;
         display: grid;
@@ -524,8 +524,11 @@ input.button_enter:hover {
     background-size: cover;
 }
 .vid img {
-    height: 100%;
-    width: 100%;
+    display: block;
+    margin-left: 50%;
+    transform: translate(-50%);
+    max-height: 100%;
+    min-width: 100%;
 }
 .vid_content.right
 {
@@ -534,26 +537,39 @@ input.button_enter:hover {
 
 
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .home_ads {
         display: block;
         width: 96%;
-        height: 200px;
+        height: auto;
         margin-top: 10px;
-        margin-left: 2%;
-        background: url(../img/samples/add_0.png) center center no-repeat;
-        background-size: 200px 200px;
+        /*background: url(../img/samples/add_0.png) center center no-repeat;
+        background-size: 200px 200px;*/
+    }
+    .home_ads.right{
+        margin-left: 10px;
+    }
+    .home_ads.left{
+        display: none;
+        margin-right: 10px;
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .home_ads {
-        display: block;
+        display: grid;
+        grid-template-rows: 50% 50%;
+        grid-gap: 5px;
         width: 96%;
         height: 98%;
         margin-top: 10px;
-        margin-left: 2%;
-        background: url(../img/samples/add_0.png) center center no-repeat;
-        background-size: 100% 100%;
+        /*background: url(../img/samples/add_0.png) center center no-repeat;
+        background-size: 100% 100%;*/
+    }
+    .home_ads.right{
+        margin-left: 10px;
+    }
+    .home_ads.left{
+        margin-right: 10px;
     }
 }
 
@@ -651,7 +667,7 @@ ul {
 /* --------------------SINGLE VID-------------------- */
 
 
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .single_vid_player {
         padding-top: 20px;
     }
@@ -670,7 +686,7 @@ ul {
         text-align: justify;
     }
 }
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .single_vid_player {
         padding-top: 40px;
         display: grid;
@@ -698,7 +714,7 @@ ul {
     border-radius: 2px;
     background-color: rgb(65, 65, 65);
 }
-@media (max-width : 430px) {
+@media (max-width : 480px) {
     .single_vid_player .footer_vid.left {
         margin-top: 15px;
     }
@@ -718,7 +734,7 @@ ul {
     }
 }
 
-@media (min-width : 430px) {
+@media (min-width : 480px) {
     .single_vid_player .footer_vid.left {
         margin-left: 1%;
         float: right;

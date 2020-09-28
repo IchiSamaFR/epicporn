@@ -29,7 +29,15 @@
             ?>
             </div>
 
-            <div class="home_ads right"></div>
+            <div class="home_ads right">
+                <?php
+                    echo preg_replace('/height=".*."/', 'height="auto"',
+                        preg_replace('/width=".*."/', 'width="100%"', GetAds(1)));
+                    echo preg_replace('/height=".*."/', 'height="auto"',
+                        preg_replace('/width=".*."/', 'width="100%"', GetAds(2)));
+                ?>
+            </div>
+
         </div>
     </div>
 
@@ -39,7 +47,14 @@
             <a href="?show=views" class="button"><div class="cross"></div><p> Voir plus </p></a>
         </div>
         <div class="c20c80">
-            <div class="home_ads left"></div>
+            <div class="home_ads left">
+                <?php
+                    echo preg_replace('/height=".*."/', 'height="auto"',
+                        preg_replace('/width=".*."/', 'width="100%"', GetAds(1)));
+                    echo preg_replace('/height=".*."/', 'height="auto"',
+                        preg_replace('/width=".*."/', 'width="100%"', GetAds(2)));
+                ?>
+            </div>
             <div class="show_vids c25">
             
             <?php
