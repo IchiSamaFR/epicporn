@@ -290,13 +290,7 @@ function GetVideos(string $by){
         while($row = mysqli_fetch_array($result)){
             ?>
 
-            <div class="box 
-            <?php
-                if ($x%2 == 0){
-                    echo "pair";
-                }
-            ?> 
-            video">
+            <div class="box video">
             
 
                 <?php
@@ -530,11 +524,7 @@ function GetCategories(string $by, int $id = -1){
         while($row = mysqli_fetch_array($result)){
             ?>
 
-            <div class="box categories <?php
-            if ($x%2 == 0){
-                echo "pair";
-            }?> 
-            ">
+            <div class="box categories">
                 <?php if($rank_perm[2] > 1){?>
                 <label class="container">
                     <input type="checkbox" name="categories[]" value="<?php echo $row["id"] ?>">
@@ -737,12 +727,7 @@ function GetComs(int $page = 1, int $rowPerPage = 20){
         if(!($x <= $rowsToGet - $rowPerPage || $x > $rowsToGet)){
             $pair ++;
         ?>
-        <div class="box 
-        <?php
-        if ($pair%2 == 0){
-            echo "pair";
-        }?>
-         coms">
+        <div class="box coms">
             <label class="container">
               <input type="checkbox" name="coms[]" value="<?php echo $row["coms_id"] ?>">
               <span class="checkmark"></span>
@@ -792,11 +777,7 @@ function GetUsers(string $by = "infos"){
             }
             ?>
 
-            <div class="box coms <?php
-            if ($x%2 == 0){
-                echo "pair";
-            }?> 
-            ">
+            <div class="box coms">
                 <label class="container">
                   <input type="checkbox" name="users[]" value="<?php echo $row["id"] ?>">
                   <span class="checkmark"></span>
@@ -838,11 +819,7 @@ function GetAdminUsers(string $by = "infos"){
         while($row = mysqli_fetch_array($result)){
             ?>
 
-            <div class="box coms <?php
-            if ($x%2 == 0){
-                echo "pair";
-            }?> 
-            ">
+            <div class="box coms">
                 <label class="container">
                   <input type="checkbox" name="users[]" value="<?php echo $row["id"] ?>">
                   <span class="checkmark"></span>

@@ -416,6 +416,19 @@ input:checked + .slider:before {
     margin-right: 5px;
 }
 
+ul {
+    margin: 0;
+    padding: 0;
+}
+.table_list>:nth-child(2n+1)
+{
+    background-color: rgb(240, 240, 240) !important;
+}
+.table_list>:nth-child(2n)
+{
+    background-color: rgb(250, 250, 250) !important;
+}
+
 .comment a {
     float: none;
 }
@@ -632,10 +645,6 @@ input.add_button {
     background-color: rgb(240, 240, 240);
     display: grid;
     grid-template-columns: 30px 15% auto 20% 20%;
-}
-
-.table_list .box.pair {
-    background-color: rgb(250, 250, 250);
 }
 
 .table_list .title_row {
