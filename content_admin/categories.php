@@ -89,7 +89,7 @@ if(isset($_POST["edit_cat"])){
                 </div>
 
                 <?php
-                    GetCategories("infos");
+                    GetCategories("list");
                 ?>
 
                 <div class="box title_row border_up categories">

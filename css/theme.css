@@ -535,7 +535,7 @@ input.button_enter:hover {
 
 
 @media (max-width : 430px) {
-    .add {
+    .home_ads {
         display: block;
         width: 96%;
         height: 200px;
@@ -546,11 +546,11 @@ input.button_enter:hover {
     }
 }
 @media (min-width : 430px) {
-    .add {
+    .home_ads {
         display: block;
         width: 96%;
         height: 98%;
-        margin-top: 2%;
+        margin-top: 10px;
         margin-left: 2%;
         background: url(../img/samples/add_0.png) center center no-repeat;
         background-size: 100% 100%;

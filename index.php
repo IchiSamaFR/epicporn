@@ -24,7 +24,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    <title>EpicPorn - EpicPorn.fr le Porno Tube Francais, des vidéos sex free...</title>
 	</head>
-    <body class="censure">
+    <body>
         <script src="tools/jquery=3.1.1.min.js"></script>
 
 <?php
@@ -36,12 +36,24 @@ include 'content/header.php';
 
 if(isset($_GET["vid"])){
 	include 'content/single_vid.php';
-} 
+}
 else if(isset($_GET["show"]))
 {
 	include 'content/show_vids.php';
 }
-else if(empty($_GET))
+else if(isset($_GET["cgu"]))
+{
+	include 'content/cgu.php';
+}
+else if(isset($_GET["privacy"]))
+{
+	include 'content/privacy.php';
+}
+else if(isset($_GET["dmca"]))
+{
+	include 'content/dmca.php';
+}
+else
 {
 	include 'content/home.php';
 }

@@ -17,19 +17,19 @@
             <?php
                 // SHOW VIDS
                 GetVideos(array(
-                    //  Where is your database
+                    //  Type of Order
                     'orderType' => 'date',
             
-                    //  Which database
+                    //  How many
                     'count' => 8,
             
-                    //  Username of connection
+                    //  Start pos
                     'startPos' => 0
                 ));
             ?>
             </div>
 
-            <div class="add right"></div>
+            <div class="home_ads right"></div>
         </div>
     </div>
 
@@ -39,7 +39,7 @@
             <a href="?show=views" class="button"><div class="cross"></div><p> Voir plus </p></a>
         </div>
         <div class="c20c80">
-            <div class="add left"></div>
+            <div class="home_ads left"></div>
             <div class="show_vids c25">
             
             <?php

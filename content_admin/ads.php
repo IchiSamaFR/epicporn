@@ -2,7 +2,6 @@
     <p class="page_title"> Paramètres de publicités </p>
     
     <div class="all_panels">
-
         <div class="box">
             <p class="title"> Accueil </p>
 

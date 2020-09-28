@@ -51,7 +51,7 @@ if(isset($_POST["edit_vid"])){
                     <h3> Catégories associés </h3>
                     <div class="choose_categories">
                         <?php 
-                            GetCategories("new_vid"); 
+                            GetCategories("add_vid"); 
                         ?>
                     </div>
 
@@ -88,7 +88,7 @@ if(isset($_POST["edit_vid"])){
                         <h3> Catégories associés </h3>
                         <div class="choose_categories">
                             <?php 
-                                GetCategories("new_vid", $val); 
+                                GetCategories("add_vid", $val); 
                             ?>
                         </div>
 
@@ -125,7 +125,7 @@ if(isset($_POST["edit_vid"])){
                 </div>
 
                 <?php
-                    GetVideos("infos");
+                    GetVideos("list");
                 ?>
                 
                 <div class="box title_row border_up video">

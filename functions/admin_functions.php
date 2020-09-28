@@ -278,7 +278,7 @@ function DeleteVideos(array $videos){
 function GetVideos(string $by){
     $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
 
-    if($by == "infos"){
+    if($by == "list"){
         $x = 0;
         
         $request = "SELECT id, title, embed
@@ -511,7 +511,7 @@ function GetCategories(string $by, int $id = -1){
 
     $id = CleanText($id);
 
-    if($by == "infos"){
+    if($by == "list"){
         $x = 0;
         
         $request = "SELECT id, name
@@ -546,7 +546,7 @@ function GetCategories(string $by, int $id = -1){
             $x = $x + 1;
         }
     } 
-    else if ($by == "new_vid" && $id == -1){
+    else if ($by == "add_vid" && $id == -1){
         $request = "SELECT id, name
         FROM categories
         ORDER BY name ASC";
@@ -562,7 +562,7 @@ function GetCategories(string $by, int $id = -1){
                 </label>
             <?php
         }
-    } else if ($by == "new_vid" && $id >= 0){
+    } else if ($by == "add_vid" && $id >= 0){
 
 
         $arrayCat = array();
@@ -642,7 +642,7 @@ function EditCategoryName(int $id, string $name){
  * @param  string $type Type of informations to get
  * @return string
  */
-function GetInfos(string $type){
+function GetStats(string $type){
     
     if($type == "videos_count"){
         $request = "SELECT count(*) 
@@ -775,6 +775,7 @@ function GetUsers(string $by = "infos"){
             if($row["premium"] == ""){
                 $row["premium"] = "null";
             }
+            /*  HTML PART */
             ?>
 
             <div class="box coms">
@@ -788,6 +789,7 @@ function GetUsers(string $by = "infos"){
                 <p> <a href=""><?php echo $row["dateRegistred"] ?> </a> </p>
             </div>
             <?php
+            /*  HTML PART */
 
             $x = $x + 1;
         }
@@ -817,8 +819,8 @@ function GetAdminUsers(string $by = "infos"){
         $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
+            /*  HTML PART */
             ?>
-
             <div class="box coms">
                 <label class="container">
                   <input type="checkbox" name="users[]" value="<?php echo $row["id"] ?>">
@@ -830,6 +832,7 @@ function GetAdminUsers(string $by = "infos"){
                 <p> <a href=""><?php echo $row["publications"] ?> </a> </p>
             </div>
             <?php
+            /*  HTML PART */
 
             $x = $x + 1;
         }
