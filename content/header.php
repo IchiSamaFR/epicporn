@@ -5,7 +5,6 @@
 ?>
 
 <div id="header_log" class="header_log disable">
-
     <div class="center_mid">
         <div class="langage">
             <a href="" class="button"> FR </a>
@@ -16,8 +15,6 @@
         </div>
         
     </div>
-
-
 </div>
 
 <div id="header_menu" class="header_menu">
@@ -28,11 +25,9 @@
         </a>
         <div class="nav_menu">
             <a href="<?php echo GetUrl(); ?>" class="nav_button 
-            <?php if(empty($_GET)){
-                echo "active"; 
-            }
-            ?>"> Accueil </a>
-            <a href="" class="nav_button"> Categories </a>
+            <?php if(IsHomePage()) echo "active"; ?>"> Accueil </a>
+
+            <a href="?categories" class="nav_button <?php if(isset($_GET["categories"])) echo "active" ?>"> Categories </a>
         </div>
 
         <div id="mobile_nav_btn" class="mobile_nav_btn">

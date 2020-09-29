@@ -38,9 +38,27 @@
 
 
         </div>
-        
         <div class="footer_vid left"> <h4><?php echo GetVideo_Views($_GET["vid"]) ?> </h4> <p> vues </p></div>
     </div>
+
+
+    </br>
+    <div class="show_vids c20">
+    <?php
+        // SHOW VIDS
+        GetVideos(array(
+            //  Type of Order
+            'orderType' => 'rand',
+    
+            //  How many
+            'count' => 10,
+    
+            //  Start pos
+            'startPos' => 0
+        ));
+    ?>
+    </div>
+
     <script>
         $(document).ready(function() {
             if($(window).width() > 1250){

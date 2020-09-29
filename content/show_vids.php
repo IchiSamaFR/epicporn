@@ -19,6 +19,8 @@ if(isset($_GET["page"])){
                     echo "Vidéos les plus récentes";
                 } else if ($_GET["show"] == "views"){
                     echo "Vidéos les plus vues";
+                } else if ($_GET["show"] == "category"){
+                    echo "Vidéos de catégorie " . GetCategoryShow($_GET["cat"]);
                 }
             ?> </h3>
         </div>
@@ -38,11 +40,26 @@ if(isset($_GET["page"])){
                             //  Start pos
                             'startPos' => $startpos
                         ));
-                    } else if ($_GET["show"] == "views"){
+                    } 
+                    else if ($_GET["show"] == "views"){
                         // SHOW VIDS
                         GetVideos(array(
                             //  Type of Order
                             'orderType' => 'views',
+                    
+                            //  How many
+                            'count' => $vidperpage_top,
+                    
+                            //  Start pos
+                            'startPos' => $startpos
+                        ));
+                    } 
+                    else if ($_GET["show"] == "category"){
+                        // SHOW VIDS
+                        GetVideos(array(
+                            //  Type of Order
+                            'orderType' => 'category',
+                            'catType' => $_GET["cat"],
                     
                             //  How many
                             'count' => $vidperpage_top,
@@ -78,6 +95,20 @@ if(isset($_GET["page"])){
                         GetVideos(array(
                             //  Type of Order
                             'orderType' => 'views',
+                    
+                            //  How many
+                            'count' => $vidperpage,
+                    
+                            //  Start pos
+                            'startPos' => ($startpos + $vidperpage_top)
+                        ));
+                    }
+                    else if ($_GET["show"] == "category"){
+                        // SHOW VIDS
+                        GetVideos(array(
+                            //  Type of Order
+                            'orderType' => 'category',
+                            'catType' => $_GET["cat"],
                     
                             //  How many
                             'count' => $vidperpage,

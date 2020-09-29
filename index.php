@@ -41,6 +41,10 @@ else if(isset($_GET["show"]))
 {
 	include 'content/show_vids.php';
 }
+else if(isset($_GET["categories"]))
+{
+	include 'content/categories.php';
+}
 else if(isset($_GET["cgu"]))
 {
 	include 'content/cgu.php';
@@ -53,7 +57,7 @@ else if(isset($_GET["dmca"]))
 {
 	include 'content/dmca.php';
 }
-else
+else if(IsHomePage())
 {
 	include 'content/home.php';
 }

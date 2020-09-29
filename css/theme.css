@@ -374,12 +374,14 @@ input.button_enter:hover {
 
 
 /* --------------------CONTENT-------------------- */
-
+/*
 .content_vids{
     padding-top: 20px;
 }
+*/
 
 .content_header{
+    margin-top: 20px;
     height: 50px;
     width: 100%;
     background-color: rgb(35, 35, 35);
@@ -418,6 +420,12 @@ input.button_enter:hover {
         width: 100%;
     }
     .c33 {
+        width: 100%;
+    }
+    .c20 {
+        width: 100%;
+    }
+    .c25{
         width: 100%;
     }
 
@@ -512,7 +520,7 @@ input.button_enter:hover {
     display: inline-block;
     vertical-align: middle;
 }
-.vid_content .center_content p:hover {
+.vid_content:hover p{
     color: #ff84dc;
 }
 
@@ -675,7 +683,7 @@ ul {
         padding-top: 10px;
         font-size: 20px;
     }
-    .single_vid_player .footer_vid a.category {
+    .single_vid_player .footer_vid a.vid_category {
         font-size: 12px;
         display: inline-block;
         border-radius: 4px;
@@ -696,7 +704,7 @@ ul {
         margin-top: 15px;
         font-size: 26px;
     }
-    .single_vid_player .footer_vid a.category {
+    .single_vid_player .footer_vid a.vid_category {
         font-size: 12px;
         display: inline-block;
         border-radius: 4px;
@@ -761,7 +769,7 @@ ul {
     word-wrap: none;
 }
 
-.single_vid_player .footer_vid a.category:hover {
+.single_vid_player .footer_vid a.vid_category:hover {
     background-color: #ed28b5;
 }
 
@@ -775,4 +783,49 @@ ul {
 }
 .censure .responsive_player {
     filter: blur(12px);
+}
+
+
+/*      CATEGORIES      */
+
+@media (min-width : 480px) {
+    .category {
+        width: 100%;
+        height: 200px;
+    }
+}
+@media (max-width : 480px) {
+    .category {
+        width: 100%;
+        height: 160px;
+    }
+}
+.category .img {
+    width: 100%;
+    height: 100%;
+    background: url(../img/samples/happy-2.png) center center no-repeat;
+    background-size: auto auto !important;
+    margin-bottom: -40px;
+}
+.category .cat_footer{
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.category .count, .category .title {
+    display: inline;
+    font-size: 16px;
+}
+
+.category .count {
+    margin-left: 20px;
+}
+
+.cat_footer .title{
+    color: #ed28b5 !important;
+}
+.cat_footer .title:hover{
+    color: #ff84dc;
 }

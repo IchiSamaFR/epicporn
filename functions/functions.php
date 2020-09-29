@@ -47,7 +47,7 @@ function GetVideo_Categories(int $id){
     $result = GetSQLRequest_NoFetchArray($request);
 
     while($row = mysqli_fetch_array($result)){
-        echo '<a href="" class="category">'.$row["cat_name"].'</a>';
+        echo '<a href="" class="vid_category">'.$row["cat_name"].'</a>';
     }
 }
 
@@ -118,7 +118,16 @@ function GetVideos(array $orderby){
     INNER JOIN videos_meta 
     ON videos.id = videos_meta.post_id
     WHERE videos_meta.meta_key='thumbnail'";
-
+    /*
+    SELECT videos.id as id, 
+		videos.title as title, 
+        (SELECT videos_meta.meta_value FROM videos_meta WHERE videos_meta.meta_key='thumbnail' AND videos_meta.post_id = videos.id) as thumbnail,
+		videos_meta.meta_id
+        
+    FROM videos
+    INNER JOIN videos_meta 
+    ON videos.id = videos_meta.post_id
+    */
     if($orderby['orderType'] == "date"){
         $request = $request . " ORDER BY videos.date DESC";
     } 
@@ -130,6 +139,18 @@ function GetVideos(array $orderby){
             WHERE videos_meta.meta_key = 'views' AND videos_meta.post_id=videos.id),
             SIGNED INTEGER)
             DESC";
+    }
+    else if($orderby['orderType'] == "rand"){
+        $request = $request . " ORDER BY 
+        RAND()";
+    }
+    else if($orderby['orderType'] == "category"){
+        $request = $request . " AND 
+        (SELECT COUNT(post_id) 
+        FROM videos_meta 
+        WHERE videos_meta.meta_key = 'category' 
+            AND videos_meta.post_id = id 
+            AND videos_meta.meta_value = ". $orderby["catType"] .") > 0";
     }
     $request = $request . " LIMIT " . ($orderby['count'] + $orderby['startPos']);
 
@@ -160,6 +181,54 @@ function GetVideos(array $orderby){
         <?php
             /*      HTML END */
         }
+    }
+}
+
+function GetCategoryShow(int $id)
+{
+    $request = "SELECT name
+    FROM categories
+    WHERE id='" . $id ."'";
+
+    $result = GetSQLRequest($request);
+
+    return $result[0];
+}
+
+
+/**
+ * Display catégories
+ * date : Order by date
+ * views : Oreder by views
+ *
+ * @param  array $orderby
+ * @return mixed
+ */
+function GetCategories()
+{
+    $request = "SELECT id, 
+	(SELECT COUNT(post_id) 
+     	FROM videos_meta 
+     	WHERE meta_value = id
+		AND meta_key = 'category') as count,
+	name
+    FROM categories
+    WHERE (SELECT COUNT(post_id) 
+            FROM videos_meta 
+            WHERE meta_value = id
+            AND meta_key = 'category') > 0
+    ORDER BY name";
+    $result = GetSQLRequest_NoFetchArray($request);
+    while($row = mysqli_fetch_array($result)){
+    ?>
+        <a href="?show=category&cat=<?php echo $row["id"] ?>" class="category">
+            <div class="img"></div>
+            <div class="cat_footer">
+                <h5 class="title"><?php echo $row['name']; ?></h5>
+                <p class="count">(<?php echo $row['count']; ?>)</p>
+            </div>
+        </a>
+    <?php
     }
 }
 
@@ -356,6 +425,11 @@ function GetVideos_Number(){
 }
 
 
+/**
+ * Get an ads by id or randomly
+ *
+ * @return string
+ */
 function GetAds(int $id = -1){
     if($id != -1)
     {
@@ -376,6 +450,22 @@ function GetAds(int $id = -1){
     return $result[0];
 }
 
+
+function IsHomePage(){
+    if(isset($_GET["vid"]) || 
+    isset($_GET["show"]) || 
+    isset($_GET["cgu"]) || 
+    isset($_GET["privacy"]) || 
+    isset($_GET["dmca"]) ||
+    isset($_GET["categories"]))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
 
 
 
