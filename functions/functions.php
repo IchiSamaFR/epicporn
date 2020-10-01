@@ -42,7 +42,8 @@ function GetVideo_Categories(int $id){
     FROM categories
     INNER JOIN videos_meta 
     ON categories.id = videos_meta.meta_value
-    WHERE videos_meta.post_id='" . $id . "'";
+    WHERE videos_meta.post_id='" . $id . "'
+    AND videos_meta.meta_key='category'";
 
     $result = GetSQLRequest_NoFetchArray($request);
 
@@ -95,7 +96,7 @@ function AddView(int $id){
     
     $request = "UPDATE videos_meta
     SET meta_value = meta_value + 1
-    WHERE post_id='" . $id . "' AND meta_key='views'";
+    WHERE post_id=" . $id . " AND meta_key='views'";
 
     $result = SendSQLRequest($request);
 

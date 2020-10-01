@@ -616,8 +616,8 @@ input.button_enter:hover {
 
 .prefoot {
     font-size: 18px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .prefoot p{
@@ -631,15 +631,13 @@ input.button_enter:hover {
     border-top: 3px solid rgb(50, 50, 50);
 }
 
+.foot_menu{
+    margin-top: -5px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
 ul {
     list-style-type: none;
-    margin-top: 30px;
-    margin-bottom: 40px;
-}
-
-.foot_menu {
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
 }
 
 .foot_menu h2{
