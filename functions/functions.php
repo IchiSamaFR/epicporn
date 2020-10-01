@@ -95,8 +95,7 @@ function AddView(int $id){
     
     $request = "UPDATE videos_meta
     SET meta_value = meta_value + 1
-    WHERE
-        post_id='" . $id . "' AND meta_key='views'";
+    WHERE post_id='" . $id . "' AND meta_key='views'";
 
     $result = SendSQLRequest($request);
 
@@ -113,7 +112,12 @@ function AddView(int $id){
  */
 function GetVideos(array $orderby){
 
-    $request = "SELECT videos.id as id, videos.title as title, videos_meta.meta_value as thumbnail
+    $request = "SELECT videos.id as id, 
+                    videos.title as title, 
+                    videos_meta.meta_value as thumbnail,
+                    (SELECT videos_meta.meta_value 
+                        FROM videos_meta 
+                        WHERE videos_meta.meta_key = 'views' AND videos_meta.post_id=videos.id) as 'views'
     FROM videos
     INNER JOIN videos_meta 
     ON videos.id = videos_meta.post_id
@@ -132,13 +136,14 @@ function GetVideos(array $orderby){
         $request = $request . " ORDER BY videos.date DESC";
     } 
     else if($orderby['orderType'] == "views"){
-        $request = $request . " ORDER BY 
-        CONVERT (
+        /*$request = $request . " ORDER BY 
+        CONVERT(
             (SELECT videos_meta.meta_value 
             FROM videos_meta 
             WHERE videos_meta.meta_key = 'views' AND videos_meta.post_id=videos.id),
             SIGNED INTEGER)
-            DESC";
+            DESC";*/
+        $request = $request . " ORDER BY CONVERT(views, SIGNED INTEGER) DESC";
     }
     else if($orderby['orderType'] == "rand"){
         $request = $request . " ORDER BY 
@@ -173,7 +178,10 @@ function GetVideos(array $orderby){
             </div>
             <div class="container">
                 <div class="center_content">
-                    <p> <?php echo $row['title']; ?> </p>
+                    <p class="vid_title"> <?php echo $row['title']; ?> </p>
+                    <div class="vid_stats"> 
+                        <p class="vid_views"> <?php echo $row['views']; ?> Vues </p>
+                    </div>
                 </div>
             </div>
         </a>

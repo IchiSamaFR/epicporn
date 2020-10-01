@@ -30,7 +30,7 @@
         
         <div class="footer_vid">
             <div class="center">
-                <p class="vid_title"><?php echo GetVideo_Name($_GET["vid"]); ?> </p>
+                <h1 class="vid_title"><?php echo GetVideo_Name($_GET["vid"]); ?> </h1>
                 <div class="categories">
                     <?php GetVideo_Categories($_GET["vid"]); ?>
                 </div>
