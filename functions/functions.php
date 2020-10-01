@@ -38,7 +38,9 @@ function GetVideo_Name(int $id){
  */
 function GetVideo_Categories(int $id){
 
-    $request = "SELECT categories.name as cat_name
+    $request = "SELECT 
+        categories.id as id,
+        categories.name as cat_name
     FROM categories
     INNER JOIN videos_meta 
     ON categories.id = videos_meta.meta_value
@@ -48,7 +50,7 @@ function GetVideo_Categories(int $id){
     $result = GetSQLRequest_NoFetchArray($request);
 
     while($row = mysqli_fetch_array($result)){
-        echo '<a href="" class="vid_category">'.$row["cat_name"].'</a>';
+        echo '<a href="?show=category&cat='.$row["id"].'" class="vid_category">'.$row["cat_name"].'</a>';
     }
 }
 
