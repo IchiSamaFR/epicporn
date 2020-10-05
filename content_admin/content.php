@@ -7,60 +7,32 @@
 
     $_SESSION["admin_user"] = 13;
 
-    if(isset($_GET["perso"]))
+    if(isset($_GET["perso"]) && $rank_perm[0] > 0)
     {
-        if($rank_perm[0] == 0){
-            include("dashboard.php");
-            return;
-        }
+
     } 
-    else if(isset($_GET["vid"]))
+    else if(isset($_GET["vid"]) && $rank_perm[1] > 0)
     {
-        if($rank_perm[1] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("video.php");
     } 
-    else if(isset($_GET["cat"]))
+    else if(isset($_GET["cat"]) && $rank_perm[2] > 0)
     {
-        if($rank_perm[2] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("categories.php");
     }
-    else if(isset($_GET["coms"]))
+    else if(isset($_GET["coms"]) && $rank_perm[3] > 0)
     {
-        if($rank_perm[3] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("coms.php");
     }  
-    else if(isset($_GET["ausers"]))
+    else if(isset($_GET["ausers"]) && $rank_perm[4] > 0)
     {
-        if($rank_perm[4] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("admin_users.php");
-        
     }
-    else if(isset($_GET["users"]))
+    else if(isset($_GET["users"]) && $rank_perm[5] > 0)
     {
-        if($rank_perm[5] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("users.php");
     }  
-    else if(isset($_GET["ad"]))
+    else if(isset($_GET["ad"]) && $rank_perm[6] > 0)
     {
-        if($rank_perm[6] == 0){
-            include("dashboard.php");
-            return;
-        }
         include("ads.php");
     } else 
     {

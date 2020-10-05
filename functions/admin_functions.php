@@ -705,6 +705,8 @@ function GetStats(string $type){
  * @return mixed
  */
 function GetComs(int $page = 1, int $rowPerPage = 20){
+    $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
+    
     $page = CleanText($page);
 
     $x = 0;
@@ -728,10 +730,24 @@ function GetComs(int $page = 1, int $rowPerPage = 20){
             $pair ++;
         ?>
         <div class="box coms">
+            <?php
+                if($rank_perm[3] > 1)
+                {
+            ?>
             <label class="container">
               <input type="checkbox" name="coms[]" value="<?php echo $row["coms_id"] ?>">
               <span class="checkmark"></span>
             </label>
+            <?php
+                }
+                else
+                {
+                ?>
+                </br>
+                <?php
+                }
+            ?>
+
             <div class="author">
                 <p> <?php echo $row["author"]; ?> </p>
             </div>

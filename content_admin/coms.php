@@ -31,10 +31,17 @@ if(isset($_POST["delete_coms"]) && isset($_POST["coms"])){
                 <p> Date </p>
             </div>
         </div>
+        <?php
+            if($rank_perm[3] > 1)
+            {
+        ?>
         <div class="actions">
             <input type="submit" class="delete_button" value="Supprimer" 
                 name="delete_coms" tabindex="200"></input>
         </div>
+        <?php
+            }
+        ?>
     </form>
 </div>
 
