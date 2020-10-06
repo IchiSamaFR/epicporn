@@ -441,7 +441,7 @@ function GetVideos_Number(){
  *
  * @return string
  */
-function GetAds(int $id = -1){
+function GetAds(int $id = -1, string $type = "box"){
     if($id != -1)
     {
         $request = "SELECT frame 
@@ -453,6 +453,7 @@ function GetAds(int $id = -1){
     {
         $request = "SELECT frame 
         FROM `ads` 
+        WHERE type='". $type ."'
         ORDER BY RAND()
         LIMIT 1";
     }

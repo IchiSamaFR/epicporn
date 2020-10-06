@@ -8,7 +8,7 @@
 ?>
 
 <div class="center_mid">
-    <div class="single_vid_player">
+    <section class="single_vid_player">
         <div class="responsive_player">
             <div id="video_frame">
                 <?php echo GetVideo_Embed($_GET["vid"]); /*
@@ -39,11 +39,11 @@
 
         </div>
         <div class="footer_vid left"> <h4><?php echo GetVideo_Views($_GET["vid"]) ?> </h4> <p> vues </p></div>
-    </div>
+    </section>
 
 
     </br>
-    <div class="show_vids c20">
+    <section class="show_vids c20">
     <?php
         // SHOW VIDS
         GetVideos(array(
@@ -57,7 +57,7 @@
             'startPos' => 0
         ));
     ?>
-    </div>
+    </section>
 
     <script>
         $(document).ready(function() {

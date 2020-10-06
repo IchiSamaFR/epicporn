@@ -42,10 +42,10 @@ if(isset($_POST["edit_vid"])){
 
                     <h3> Titre de la vidéo </h3>
                     <input class="textfield" type="text" placeholder="" 
-                    tabindex="20" size="" value="" id="vid_name" name="title"></input>
+                    tabindex="20" size="" value="" id="vid_name" name="title" required />
                         
                     <h3> Embed de la vidéo </h3>
-                    <textarea name="embed" id="embed" class="textfield"></textarea>
+                    <textarea name="embed" id="embed" class="textfield" required></textarea>
 
 
                     <h3> Catégories associés </h3>
@@ -59,7 +59,7 @@ if(isset($_POST["edit_vid"])){
 
                     <div>
                         <input type="submit" class="add_button" value="Ajouter la vidéo" 
-                        name="add_vid" tabindex="100"></input>
+                        name="add_vid" tabindex="100" />
                         <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
                     </div>
                 </form>
@@ -79,10 +79,10 @@ if(isset($_POST["edit_vid"])){
 
                         <h3> Ancien titre : <?php echo GetVideoTitle($val); ?> </h3>
                         <input class="textfield" type="text" placeholder="" 
-                        tabindex="20" size="" value="<?php echo GetVideoTitle($val); ?>" id="vid_name" name="title_<?php echo $val; ?>"></input>
+                        tabindex="20" size="" value="<?php echo GetVideoTitle($val); ?>" id="vid_name" name="title_<?php echo $val; ?>" required />
                             
                         <h3> Embed de la vidéo </h3>
-                        <textarea name="embed_<?php echo $val; ?>" id="embed" class="textfield"><?php echo GetVideoEmbed($val);?></textarea>
+                        <textarea name="embed_<?php echo $val; ?>" id="embed" class="textfield" required><?php echo GetVideoEmbed($val);?></textarea>
 
 
                         <h3> Catégories associés </h3>
@@ -99,7 +99,7 @@ if(isset($_POST["edit_vid"])){
 
                 <div class="actions">
                     <input type="submit" class="add_button" value="Editer les vidéos" 
-                    name="edit_vid" tabindex="100"></input>
+                    name="edit_vid" tabindex="100" />
                     <a class="cancel_button" href="admin.php?vid" tabindex="110"> Annuler </a>
                 </div>
             </form>

@@ -35,12 +35,12 @@ if(isset($_POST["edit_cat"])){
                 <div class="box new_vid">
                     <h3> Nom de la catégorie </h3>
                     <input class="textfield" type="text" placeholder="" 
-                        tabindex="10" size="" value="" id="cat_name" name="category"></input>
+                        tabindex="10" size="" value="" id="cat_name" name="category" required />
                 </div>
 
                 <div class="actions">
                     <input type="submit" class="add_button" value="Ajouter la catégorie" 
-                    name="add_cat" tabindex="100"></input>
+                    name="add_cat" tabindex="100" />
                     <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
                 </div>
             </form>
@@ -59,7 +59,7 @@ if(isset($_POST["edit_cat"])){
                 <div class="box new_vid">
                         <h3> Ancien nom : <?php echo $name ?> </h3>
                         <input class="textfield" type="text" placeholder="" 
-                        tabindex="10" size="" value="<?php echo $name ?>" id="cat_name" name="category_<?php echo $val ?>"></input>
+                        tabindex="10" size="" value="<?php echo $name ?>" id="cat_name" name="category_<?php echo $val ?>" required />
                 </div>
                 <?php
                 }
@@ -67,7 +67,7 @@ if(isset($_POST["edit_cat"])){
 
                 <div class="actions">
                     <input type="submit" class="add_button" value="Modifier les catégories" 
-                    name="edit_cat" tabindex="100"></input>
+                    name="edit_cat" tabindex="100"/>
                     <a class="cancel_button" href="admin.php?cat" tabindex="110"> Annuler </a>
                 </div>
             </form>

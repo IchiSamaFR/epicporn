@@ -11,7 +11,7 @@ if(isset($_GET["page"])){
 ?>
 
 <div class="center_mid">
-    <div class="content_vids">
+    <section class="content_vids">
 
         <div class="content_header">
             <h3> <?php
@@ -122,7 +122,7 @@ if(isset($_GET["page"])){
                 </div>
             </div>
         </div>
-    </div>
+    </section>
     <?php
         GetNavBar($vidperpage + $vidperpage_top);
     ?>

@@ -23,10 +23,9 @@
                     echo '""';
                 }
                 ?>
-                id="user_login" name="user">
-            </input>
+                id="user_login" name="user" required />
 
-            <input class="inputField" type="password" placeholder="Mot de passe" tabindex="20" size="30" value="" id="user_pass" name="pass"></input>
+            <input class="inputField" type="password" placeholder="Mot de passe" tabindex="20" size="30" value="" id="user_pass" name="pass" />
             <input type="submit" class="submit" tabindex="100" value="Se connecter" id="submit" name="submit">
         </form>
     </div>
