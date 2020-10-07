@@ -531,6 +531,12 @@ function DeleteCategories(array $categories){
     if(!$res = SendSQLRequest($request)){
         echo($res);
     }
+    else
+    {
+        foreach($categories as $cat){
+            unlink("meta/categories_images/catimage_" . $cat . ".jpg");
+        }
+    }
 }
 
 /**
