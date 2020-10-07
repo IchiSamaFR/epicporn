@@ -404,7 +404,7 @@ input:checked + .slider:before {
     min-height: 30px;
     background-color: rgb(240, 240, 240);
     display: grid;
-    grid-template-columns: 32px auto;
+    grid-template-columns: 32px auto 20%;
 }
 
 .table_list .box p{
@@ -633,10 +633,17 @@ input.add_button {
 
 .new_vid h3 {
     color: black;
-    border-bottom: 1px solid black;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+
+
+
+
+input[type="file"] {
+    color: black;
+    margin-bottom: 10px;
 }
 
 /* --------------------COMMENTAIRES-------------------- */

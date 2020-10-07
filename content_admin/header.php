@@ -61,7 +61,7 @@ function NullGet(){
     <nav class="left_menu sticky">
         <div class="nav_menu">
 
-            <a href="admin" class="<?php if(NullGet()){ echo "active"; } ?>">
+            <a href="admin.php" class="<?php if(NullGet()){ echo "active"; } ?>">
                 Tableau de bord </a>
             <?php
                 if($rank_perm[0] != 0){

@@ -442,14 +442,14 @@ function EditVideo(int $id, string $title, string $embed, array $categories){
  * @param  string $name
  * @return void
  */
-function AddCategory(string $name){
+function AddCategory(string $name, string $thumbnail){
     $name = CleanText($name);
-
+    
     //  Create new video
     $request = "INSERT INTO `categories` 
-    (`id`, `name`) 
+    (`id`, `name`, `thumbnail`) 
     VALUES 
-    (NULL, '".$name."')";
+    (NULL, '".$name."', '".$thumbnail."')";
 
     if(!$res = SendSQLRequest($request)){
         echo($res);
@@ -514,14 +514,18 @@ function GetCategories(string $by, int $id = -1){
     if($by == "list"){
         $x = 0;
         
-        $request = "SELECT id, name
+        $request = "SELECT id, name, thumbnail
         FROM categories
-        ORDER BY name ASC
-        LIMIT 50";
+        ORDER BY name ASC";
 
         $result = GetSQLRequest_NoFetchArray($request);
 
         while($row = mysqli_fetch_array($result)){
+
+
+            $row["thumbnail"] = explode('/', $row["thumbnail"]);
+            $row["thumbnail"] = $row["thumbnail"][sizeof($row["thumbnail"]) - 1];
+
             ?>
 
             <div class="box categories">
@@ -531,6 +535,7 @@ function GetCategories(string $by, int $id = -1){
                     <span class="checkmark"></span>
                 </label>
                 <p> <a href="?cat&edit%5B%5D=<?php echo $row["id"] ?>"><?php echo $row["name"] ?> </a> </p>
+                <p> <a href="?cat&edit%5B%5D=<?php echo $row["id"] ?>"><?php echo $row["thumbnail"] ?> </a> </p>
                 <?php 
                 }
                 else {
@@ -618,18 +623,43 @@ function GetCategoryName(int $id){
 }
 
 /**
- * Edit category name
+ * Get Category file name by the id
+ *
+ * @param  int $id
+ * @return void
+ */
+function GetCategoryFileName(int $id){
+    $id = CleanText($id);
+    $request = "SELECT thumbnail
+    FROM categories
+    WHERE id=" . $id;
+
+    $result = GetSQLRequest($request);
+    return $result[0];
+}
+
+/**
+ * Edit category
  *
  * @param  int $id
  * @param  string $name
  * @return void
  */
-function EditCategoryName(int $id, string $name){
+function EditCategory(int $id, string $name, string $thumbnail = ""){
     $id = CleanText($id);
     $name = CleanText($name);
-    $request = "UPDATE categories
-    SET name='". $name ."'
-    WHERE id=". $id;
+    if($thumbnail == "")
+    {
+        $request = "UPDATE categories
+        SET name='". $name ."'
+        WHERE id=". $id;
+    }
+    else 
+    {
+        $request = "UPDATE categories
+        SET name='". $name ."', thumbnail='". $thumbnail ."'
+        WHERE id=". $id;
+    }
 
     $result = SendSQLRequest($request);
 }

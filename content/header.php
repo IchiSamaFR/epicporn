@@ -25,7 +25,7 @@
             </a>
             <div class="nav_menu">
                 <a href="<?php echo GetUrl(); ?>" class="nav_button 
-                <?php if(IsHomePage()) echo "active"; ?>"> Accueil </a>
+                    <?php if(IsHomePage()) echo "active"; ?>"> Accueil </a>
 
                 <a href="?categories" class="nav_button <?php if(isset($_GET["categories"])) echo "active" ?>"> Categories </a>
             </div>
@@ -36,11 +36,10 @@
         </div>
         <div id="mobile_nav_menu" class="mobile_nav_menu_content">
             <div class="title_menu"><h2> Navigation </h2></div>
-            <a href="<?php echo GetUrl(); ?>" class="nav_button <?php if(empty($_GET)){
-                    echo "active"; 
-                }
-                ?>"><p> Accueil </p></a>
-            <a href="" class="nav_button"><p> Categories </p></a>
+            <a href="<?php echo GetUrl(); ?>" class="nav_button 
+                <?php if(IsHomePage()) echo "active"; ?>"><p> Accueil </p></a>
+            <a href="?categories" class="nav_button 
+                <?php if(isset($_GET["categories"])) echo "active" ?>"><p> Categories </p></a>
         </div>
 
 
