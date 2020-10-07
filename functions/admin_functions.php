@@ -442,17 +442,54 @@ function EditVideo(int $id, string $title, string $embed, array $categories){
  * @param  string $name
  * @return void
  */
-function AddCategory(string $name, string $thumbnail){
+function AddCategory(string $name, $thumbnail = ""){
     $name = CleanText($name);
-    
-    //  Create new video
-    $request = "INSERT INTO `categories` 
-    (`id`, `name`, `thumbnail`) 
-    VALUES 
-    (NULL, '".$name."', '".$thumbnail."')";
 
-    if(!$res = SendSQLRequest($request)){
-        echo($res);
+    //  Create new category
+    $request = "INSERT INTO `categories` 
+    (`id`, `name`) 
+    VALUES 
+    (NULL, '".$name."')";
+
+    if($result = SendSQLRequest($request)){
+        $last_id = $result->insert_id;
+
+        if($thumbnail == ""){
+            return;
+        }
+        /*  Get file
+        *  Get content file
+        *  Get the name file
+        *  Get Extension file
+        */
+        $file = addslashes(file_get_contents($thumbnail["tmp_name"]));
+        $filename = $thumbnail["name"];
+        $imageFileType = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+
+        /*  Set of the target file
+        *  Get folder and put md5 + extension
+        */
+        $target_file = "meta/categories_images/catimage_" . $last_id . ".jpg";
+
+        /*  Add Cat
+        *  Check if it's a good extension
+        */
+        if($imageFileType == "jpg" || $imageFileType == "jpeg" || $imageFileType == "png"){
+            if (move_uploaded_file($thumbnail["tmp_name"], $target_file)) {
+
+                $request = "UPDATE `categories`
+                SET thumbnail='". $target_file ."'
+                WHERE id=". $last_id;
+
+                if(!$res = SendSQLRequest($request)){
+                    echo($res);
+                }
+            }
+        }
+
+    }
+    else {
+        echo($result);
     }
 }
 
@@ -645,7 +682,7 @@ function GetCategoryFileName(int $id){
  * @param  string $name
  * @return void
  */
-function EditCategory(int $id, string $name, string $thumbnail = ""){
+function EditCategory(int $id, string $name, $thumbnail = ""){
     $id = CleanText($id);
     $name = CleanText($name);
     if($thumbnail == "")
@@ -655,10 +692,48 @@ function EditCategory(int $id, string $name, string $thumbnail = ""){
         WHERE id=". $id;
     }
     else 
-    {
-        $request = "UPDATE categories
-        SET name='". $name ."', thumbnail='". $thumbnail ."'
-        WHERE id=". $id;
+    { 
+        /*  Get file
+        *  Get content file
+        *  Get the name file
+        *  Get Extension file
+        */
+        $file = addslashes(file_get_contents($thumbnail["tmp_name"]));
+        $filename = $thumbnail["name"];
+        $imageFileType = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+
+        /*  Set of the target file
+        *  Get folder and put md5 + extension
+        */
+        $target_file = "meta/categories_images/catimage_" . $id . ".jpg";
+
+        /*  Add Cat
+        *  Check if it's a good extension
+        */
+        if($imageFileType == "jpg" || $imageFileType == "jpeg" || $imageFileType == "png"){
+            if (move_uploaded_file($thumbnail["tmp_name"], $target_file)) {
+
+                $request = "UPDATE categories
+                SET name='". $name ."', thumbnail='". $target_file ."'
+                WHERE id=". $id;
+
+                if(!$res = SendSQLRequest($request)){
+                    echo($res);
+                }
+            }
+            else 
+            {
+                $request = "UPDATE categories
+                SET name='". $name ."'
+                WHERE id=". $id;
+            }
+        }
+        else 
+        {
+            $request = "UPDATE categories
+            SET name='". $name ."'
+            WHERE id=". $id;
+        }
     }
 
     $result = SendSQLRequest($request);

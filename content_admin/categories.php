@@ -2,36 +2,9 @@
 <?php 
 
 if(isset($_POST["add_cat"])){
-
-    /*  Get file
-     *  Get content file
-     *  Get the name file
-     *  Get Extension file
-     */
-    $file = addslashes(file_get_contents($_FILES["cat_img"]["tmp_name"]));
-    $filename = $_FILES["cat_img"]["name"];
-    $imageFileType = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
-
-    /*  Random name creation
-     *  Get a random int
-     *  Transform int to md5
-     */
-    $result = md5(rand());
-
-    /*  Set of the target file
-     *  Get folder and put md5 + extension
-     */
-    $target_file = "meta/categories_images/" . $result . "." . $imageFileType;
-
-    /*  Add Cat
-     *  Check if it's a good extension
-     */
-    if($imageFileType == "jpg" || $imageFileType == "jpeg" || $imageFileType == "png"){
-        if (!file_exists($target_file) && move_uploaded_file($_FILES["cat_img"]["tmp_name"], $target_file)) {
-            AddCategory($_POST["category"], $target_file);
-        }
-    }
+    AddCategory($_POST["category"], $_FILES["cat_img"]);
 }
+
 if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
     DeleteCategories($_POST["categories"]);
 }
@@ -54,45 +27,10 @@ if(isset($_POST["edit"]) && isset($_POST["categories"])){
 if(isset($_POST["edit_cat"])){
 
     foreach ($_GET["edit"] as $val){
-
-        /*  Get file
-         *  Get content file
-         *  Get the name file
-         *  Get Extension file
-         */
-        $file = addslashes(file_get_contents($_FILES["cat_img_" . $val]["tmp_name"]));
-        $filename = $_FILES["cat_img_" . $val]["name"];
-        $imageFileType = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
-    
-        /*  Random name creation
-         *  Get a random int
-         *  Transform int to md5
-         */
-        $result = md5(rand());
-    
-        /*  Set of the target file
-         *  Get folder and put md5 + extension
-         */
-        $target_file = "meta/categories_images/" . $result . "." . $imageFileType;
-    
-        /*  Add Cat
-         *  Check if it's a good extension
-         */
-        if($imageFileType == "jpg" || $imageFileType == "jpeg" || $imageFileType == "png"){
-            if (!file_exists($target_file) 
-                && move_uploaded_file($_FILES["cat_img_" . $val]["tmp_name"], $target_file)){
-                EditCategory($val, $_POST["category_" . $val], $target_file);
-            }
-        }
-        else if ($file == "")
-        {
-            EditCategory($val, $_POST["category_" . $val]);
-        }
-        
+        EditCategory($val, $_POST["category_" . $val], $_FILES["cat_img_" . $val]);
     }
-    /*
     $url = strtok($_SERVER["REQUEST_URI"], '?');
-    echo '<script>window.location.href = "'. $url .'?cat";</script>';*/
+    echo '<script>window.location.href = "'. $url .'?cat";</script>';
 }
 ?>
 
