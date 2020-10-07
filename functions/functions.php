@@ -222,7 +222,7 @@ function GetCategories()
      	FROM videos_meta 
      	WHERE meta_value = id
 		AND meta_key = 'category') as count,
-	name
+	name, thumbnail
     FROM categories
     WHERE (SELECT COUNT(post_id) 
             FROM videos_meta 
@@ -233,7 +233,21 @@ function GetCategories()
     while($row = mysqli_fetch_array($result)){
     ?>
         <a href="?show=category&cat=<?php echo $row["id"] ?>" class="category">
-            <div class="img"></div>
+            <?php
+                if($row["thumbnail"] != "" && file_exists($row["thumbnail"]))
+                {
+                ?>
+                <div class="img" style="background: url(<?php echo $row['thumbnail']; ?>) center center no-repeat;
+                                        background-size: 100% auto !important;"></div>
+                <?php
+                }
+                else
+                {
+                ?>
+                <div class="img"></div>
+                <?php
+                }
+            ?>
             <div class="cat_footer">
                 <h5 class="title"><?php echo $row['name']; ?></h5>
                 <p class="count">(<?php echo $row['count']; ?>)</p>
