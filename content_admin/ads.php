@@ -8,9 +8,7 @@ if(isset($_POST["edit_ads"]))
             array_push($ads, substr($key, 6));
         }
     }
-    if($ads != null){
-        SetAdsPanel($ads);
-    }
+    SetAdsPanel($ads);
 }
 
 ?>

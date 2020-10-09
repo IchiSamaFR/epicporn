@@ -219,6 +219,9 @@ input.button_enter:hover {
         grid-template-rows: 50% 50%;
         text-align: center;
     }
+    .solo_ads {
+        text-align: center;
+    }
     .second_ads{
         display: none;
     }
@@ -234,6 +237,9 @@ input.button_enter:hover {
     .ads{
         display: grid;
         grid-template-rows: 50% 50%;
+        text-align: center;
+    }
+    .solo_ads {
         text-align: center;
     }
 }
@@ -486,6 +492,15 @@ input.button_enter:hover {
 .show_vids.right
 {
     padding-left: 20%;
+}
+.headband_ads {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+.headband_ads a{
+    display: inline-block;
 }
 
 .vid_content{

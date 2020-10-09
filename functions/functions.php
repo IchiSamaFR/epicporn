@@ -476,6 +476,22 @@ function GetAds(int $id = -1, string $type = "box"){
     return $result[0];
 }
 
+function GetAdsInfos(string $page){
+    $toReturn = [];
+
+    $request = "SELECT meta_position as pos, meta_value as val, meta_type as type
+    FROM `ads_meta` 
+    WHERE meta_page='". $page ."'";
+
+    $result = GetSQLRequest_NoFetchArray($request);
+    while($row = mysqli_fetch_array($result)){
+        $toReturn[$row['pos']]['val'] = $row['val'];
+        $toReturn[$row['pos']]['type'] = $row['type'];
+    }
+    return $toReturn;
+}
+
+
 
 function IsHomePage(){
     if(isset($_GET["vid"]) || 

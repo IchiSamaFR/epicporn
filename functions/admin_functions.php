@@ -1099,30 +1099,42 @@ function GetAdsPanel(){
  */
 function SetAdsPanel(array $ads){
 
-    $request = "UPDATE ads_meta
-                SET meta_value=1
-                WHERE meta_id=";
-    $s_request = "UPDATE ads_meta
-                SET meta_value=0
-                WHERE meta_id!=";
-    
-    $x = 0;
-    foreach($ads as $val){
-        if($x == 0){
-            $request = $request . $val;
-            $s_request = $s_request . $val;
-            $x = $x + 1;
+    if($ads != null)
+    {
+        $request = "UPDATE ads_meta
+                    SET meta_value=1
+                    WHERE meta_id=";
+        $s_request = "UPDATE ads_meta
+                    SET meta_value=0
+                    WHERE meta_id!=";
+        
+        $x = 0;
+        foreach($ads as $val){
+            if($x == 0){
+                $request = $request . $val;
+                $s_request = $s_request . $val;
+                $x = $x + 1;
+            }
+            else {
+                $request = $request . " OR meta_id=" . $val;
+                $s_request = $s_request . " AND meta_id!=" . $val;
+            }
         }
-        else {
-            $request = $request . " OR meta_id=" . $val;
-            $s_request = $s_request . " AND meta_id!=" . $val;
+        if(!$res = SendSQLRequest($request)){
+            echo($res);
+        }
+        if(!$s_res = SendSQLRequest($s_request)){
+            echo($s_res);
         }
     }
-    if(!$res = SendSQLRequest($request)){
-        echo($res);
-    }
-    if(!$s_res = SendSQLRequest($s_request)){
-        echo($s_res);
+    else 
+    {
+        $request = "UPDATE ads_meta
+                    SET meta_value=0
+                    WHERE 1";
+        if(!$res = SendSQLRequest($request)){
+            echo($res);
+        }
     }
 }
 
