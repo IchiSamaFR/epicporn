@@ -1,72 +1,36 @@
+<?php
+
+if(isset($_POST["edit_ads"]))
+{
+    $ads = [];
+    foreach ($_POST as $key => $value) {
+        if(substr($key, 0, 6) == "check_"){
+            array_push($ads, substr($key, 6));
+        }
+    }
+    if($ads != null){
+        SetAdsPanel($ads);
+    }
+}
+
+?>
+
+
+
+
+
 <div class="centered">
     <p class="page_title"> Paramètres de publicités </p>
     
-    <div class="all_panels">
-        <div class="box">
-            <p class="title"> Accueil </p>
-
-            <p>
-                Entete
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Gauche des vidéos
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Droite des vidéos
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Pubs intempéstives
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            
+    <form method="post">
+        <div class="all_panels">
+            <?php
+                GetAdsPanel();
+            ?>
         </div>
-        <div class="box">
-            <p class="title"> Player de vidéos </p>
-
-            <p>
-                Entete
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Droite des vidéos
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Sous les vidéos
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            <p>
-                Pubs intempéstives
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </p>
-            
+        <div class="actions">
+            <input type="submit" class="add_button" value="Appliquer les modifications" 
+                name="edit_ads" tabindex="100"/>
         </div>
-    </div>
+    </form>
 </div>

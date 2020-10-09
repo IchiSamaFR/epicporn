@@ -31,7 +31,7 @@
     {
         include("users.php");
     }  
-    else if(isset($_GET["ad"]) && $rank_perm[6] > 0)
+    else if(isset($_GET["ads"]) && $rank_perm[6] > 0)
     {
         include("ads.php");
     } else 

@@ -1037,4 +1037,93 @@ function DeleteUsers(array $users){
     }
 }
 
+//          -------------------- ADS --------------------
+
+/**
+ * Get ads parameters
+ * Like Home / Categories / Single Video Player...
+ *
+ * @param  null
+ * @return html
+ */
+function GetAdsPanel(){
+    
+    $request = "SELECT DISTINCT meta_page as page
+                FROM `ads_meta`";
+
+    $result = GetSQLRequest_NoFetchArray($request);
+
+    while($row = mysqli_fetch_array($result)){
+        ?>
+        <div class="box">
+            <p class="title"> <?php echo $row["page"]; ?> </p>
+            <?php
+                $second_request = "SELECT meta_id as id, meta_position as pos, meta_value as val
+                            FROM `ads_meta`
+                            WHERE meta_page='" . $row["page"] . "'";
+
+            $second_result = GetSQLRequest_NoFetchArray($second_request);
+
+            while($second_row = mysqli_fetch_array($second_result)){
+            ?>
+
+            <p>
+                <?php echo $second_row["pos"]; ?>
+                <label class="switch">
+                    <input type="checkbox" 
+                        <?php 
+                        if($second_row["val"] > 0){
+                            echo "checked";
+                        }
+                        ?> name="check_<?php echo $second_row["id"] ?>">
+                    <span class="slider round"></span>
+                </label>
+            </p>
+
+            <?php
+            }
+            ?>
+
+        </div>
+        <?php
+    }
+}
+
+
+/**
+ * Set enable or disable for all panels
+ * By get ads active
+ *
+ * @param  array $ads
+ * @return void
+ */
+function SetAdsPanel(array $ads){
+
+    $request = "UPDATE ads_meta
+                SET meta_value=1
+                WHERE meta_id=";
+    $s_request = "UPDATE ads_meta
+                SET meta_value=0
+                WHERE meta_id!=";
+    
+    $x = 0;
+    foreach($ads as $val){
+        if($x == 0){
+            $request = $request . $val;
+            $s_request = $s_request . $val;
+            $x = $x + 1;
+        }
+        else {
+            $request = $request . " OR meta_id=" . $val;
+            $s_request = $s_request . " AND meta_id!=" . $val;
+        }
+    }
+    if(!$res = SendSQLRequest($request)){
+        echo($res);
+    }
+    if(!$s_res = SendSQLRequest($s_request)){
+        echo($s_res);
+    }
+}
+
 ?>

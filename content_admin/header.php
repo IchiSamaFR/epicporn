@@ -8,7 +8,7 @@ if(isset($_POST['disconnect'])){
 
 $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
 
-function NullGet(){
+function NavNullGet(){
     $rank_perm = Admin_GetRank($_SESSION["Admin"]["id"]);
 
     $isTrue;
@@ -31,7 +31,7 @@ function NullGet(){
     if (isset($_GET["users"]) && $rank_perm[5] > 0){
         return false;
     }
-    if (isset($_GET["ad"]) && $rank_perm[6] > 0){
+    if (isset($_GET["ads"]) && $rank_perm[6] > 0){
         return false;
     }
     return true;
@@ -61,7 +61,7 @@ function NullGet(){
     <nav class="left_menu sticky">
         <div class="nav_menu">
 
-            <a href="admin.php" class="<?php if(NullGet()){ echo "active"; } ?>">
+            <a href="admin.php" class="<?php if(NavNullGet()){ echo "active"; } ?>">
                 Tableau de bord </a>
             <?php
                 if($rank_perm[0] != 0){
@@ -102,7 +102,7 @@ function NullGet(){
                 }
                 if($rank_perm[6] != 0){
             ?>
-            <a href="?ad" class="<?php if(isset($_GET["ad"])){ echo "active"; }?>">
+            <a href="?ads" class="<?php if(isset($_GET["ads"])){ echo "active"; }?>">
             Publicités </a>
             <?php
                 }
