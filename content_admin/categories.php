@@ -1,36 +1,53 @@
 
 <?php 
 
-if(isset($_POST["add_cat"])){
-    AddCategory($_POST["category"], $_FILES["cat_img"]);
-}
-
-if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
-    DeleteCategories($_POST["categories"]);
-}
-
-
-/* For each categories to edit
- * add category to the url
- */
-if(isset($_POST["edit"]) && isset($_POST["categories"])){
-    $get = "";
-    foreach ($_POST["categories"] as $val){
-        $get = $get . "&edit%5B%5D=" . $val;
+if($rank_perm[2] > 1)
+{
+    /* Add new category
+     */
+    if(isset($_POST["add_cat"])){
+        if(is_uploaded_file($_FILES["cat_img"])){
+            AddCategory($_POST["category"], $_FILES["cat_img"]);
+        }
+        else {
+            AddCategory($_POST["category"]);
+        }
     }
-    echo '<script>window.location.href = "'. GetThisUrl() . $get .'";</script>';
-}
-
-/* Edit categories
- * Edit cat
- */
-if(isset($_POST["edit_cat"])){
-
-    foreach ($_GET["edit"] as $val){
-        EditCategory($val, $_POST["category_" . $val], $_FILES["cat_img_" . $val]);
+    
+    /* Delete categories
+     */
+    if(isset($_POST["delete_cat"]) && isset($_POST["categories"])){
+        DeleteCategories($_POST["categories"]);
     }
-    $url = strtok($_SERVER["REQUEST_URI"], '?');
-    echo '<script>window.location.href = "'. $url .'?cat";</script>';
+    
+    /* Edit categories
+     * Edit cat
+     */
+    if(isset($_POST["edit_cat"])){
+    
+        foreach ($_GET["edit"] as $val){
+            if(is_uploaded_file($_FILES["cat_img_" . $val]["tmp_name"])){
+                EditCategory($val, $_POST["category_" . $val], $_FILES["cat_img_" . $val]);
+            }
+            else {
+                EditCategory($val, $_POST["category_" . $val]);
+            }
+        }
+        //$url = strtok($_SERVER["REQUEST_URI"], '?');
+        //echo '<script>window.location.href = "'. $url .'?cat";</script>';
+    }
+    
+    
+    /* For each categories to edit
+     * add category to the url
+     */
+    if(isset($_POST["edit"]) && isset($_POST["categories"])){
+        $get = "";
+        foreach ($_POST["categories"] as $val){
+            $get = $get . "&edit%5B%5D=" . $val;
+        }
+        echo '<script>window.location.href = "'. GetThisUrl() . $get .'";</script>';
+    }
 }
 ?>
 

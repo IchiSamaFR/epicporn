@@ -1,10 +1,13 @@
 
 <?php 
 
-if(isset($_POST["delete_coms"]) && isset($_POST["coms"])){
-    DeleteComs($_POST["coms"]);
-}
 
+if($rank_perm[3] > 1)
+{
+    if(isset($_POST["delete_coms"]) && isset($_POST["coms"])){
+        DeleteComs($_POST["coms"]);
+    }
+}
 ?>
 
 

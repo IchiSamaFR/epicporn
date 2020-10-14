@@ -1,32 +1,35 @@
 
 <?php 
 
-if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
-    if(!isset($_POST["categories"])){
-        $_POST["categories"] = null;
-    }
-    $error = AddVideo($_POST["embed"], $_POST["title"], $_POST["categories"]);
-}
-if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
-    DeleteVideos($_POST["videos"]);
-}
 
-if(isset($_POST["modify_vid"]) && isset($_POST["videos"])){
-    $get = "";
-    foreach ($_POST["videos"] as $val){
-        $get = $get . "&edit%5B%5D=" . $val;
+if($rank_perm[1] > 1)
+{
+    if(isset($_POST["add_vid"]) && $_POST["add_vid"] != ""){
+        if(!isset($_POST["categories"])){
+            $_POST["categories"] = null;
+        }
+        $error = AddVideo($_POST["embed"], $_POST["title"], $_POST["categories"]);
     }
-    echo '<script>window.location.href = "'. GetThisUrl() . $get .'";</script>';
-}
-
-if(isset($_POST["edit_vid"])){
-    foreach ($_GET["edit"] as $val){
-        EditVideo($val, $_POST["title_" . $val], $_POST["embed_" . $val], $_POST["categories_" . $val]);
+    if(isset($_POST["delete_vid"]) && isset($_POST["videos"])){
+        DeleteVideos($_POST["videos"]);
     }
-    $url = strtok($_SERVER["REQUEST_URI"], '?');
-    echo '<script>window.location.href = "'. $url .'?vid";</script>';
-}
 
+    if(isset($_POST["modify_vid"]) && isset($_POST["videos"])){
+        $get = "";
+        foreach ($_POST["videos"] as $val){
+            $get = $get . "&edit%5B%5D=" . $val;
+        }
+        echo '<script>window.location.href = "'. GetThisUrl() . $get .'";</script>';
+    }
+
+    if(isset($_POST["edit_vid"])){
+        foreach ($_GET["edit"] as $val){
+            EditVideo($val, $_POST["title_" . $val], $_POST["embed_" . $val], $_POST["categories_" . $val]);
+        }
+        $url = strtok($_SERVER["REQUEST_URI"], '?');
+        echo '<script>window.location.href = "'. $url .'?vid";</script>';
+    }
+}
 ?>
 
 <div class="centered">

@@ -1,8 +1,12 @@
 
 <?php
 
-if(isset($_POST["delete_users"]) && isset($_POST["users"])){
-    DeleteUsers($_POST["users"]);
+
+if($rank_perm[5] > 1)
+{
+    if(isset($_POST["delete_users"]) && isset($_POST["users"])){
+        DeleteUsers($_POST["users"]);
+    }
 }
 
 ?>

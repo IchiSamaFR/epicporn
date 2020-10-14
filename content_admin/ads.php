@@ -1,14 +1,18 @@
 <?php
 
-if(isset($_POST["edit_ads"]))
+
+if($rank_perm[6] > 1)
 {
-    $ads = [];
-    foreach ($_POST as $key => $value) {
-        if(substr($key, 0, 6) == "check_"){
-            array_push($ads, substr($key, 6));
+    if(isset($_POST["edit_ads"]))
+    {
+        $ads = [];
+        foreach ($_POST as $key => $value) {
+            if(substr($key, 0, 6) == "check_"){
+                array_push($ads, substr($key, 6));
+            }
         }
+        SetAdsPanel($ads);
     }
-    SetAdsPanel($ads);
 }
 
 ?>
